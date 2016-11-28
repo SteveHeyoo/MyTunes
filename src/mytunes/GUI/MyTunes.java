@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mytunes;
+package mytunes.GUI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +21,7 @@ public class MyTunes extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("VIEW/FXMLDocument.fxml"));
         
         Scene scene = new Scene(root);
         
