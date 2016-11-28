@@ -5,10 +5,20 @@
  */
 package mytunes.BLL;
 
+import mytunes.DAL.SongDAO;
+
 /**
  *
  * @author Stefan-VpcEB3J1E
  */
-public class MusicManager {
-    
+public class MusicManager 
+{
+    private static final String FILE_NAME = "Departments.dat";
+
+    private SongDAO songDAO;
+
+    public MusicManager()
+    {
+        songDAO = new SongDAO(FILE_NAME);
+    }
 }
