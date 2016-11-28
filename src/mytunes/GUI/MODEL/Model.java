@@ -5,10 +5,35 @@
  */
 package mytunes.GUI.MODEL;
 
+import mytunes.BE.Song;
+import mytunes.BLL.MusicManager;
+
 /**
  *
  * @author Stefan-VpcEB3J1E
  */
-public class Model {
+public class Model
+{
+
+    private static Model INSTANCE;
+    private MusicManager mMgr;
+
+    private Model()
+    {
+        mMgr = new MusicManager();
+        //mMgr.addSong(new Song(0, artist, title, filePath, 0));
+
+    }
+
+    public static Model getInstance()
+    {
+        if (INSTANCE == null)
+        {
+            INSTANCE = new Model();
+        }
+        return INSTANCE;
+    }
     
+    
+
 }
