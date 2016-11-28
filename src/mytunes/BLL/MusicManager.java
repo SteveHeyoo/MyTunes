@@ -10,5 +10,6 @@ package mytunes.BLL;
  * @author Stefan-VpcEB3J1E
  */
 public class MusicManager {
+    private String lol;
 
 }
