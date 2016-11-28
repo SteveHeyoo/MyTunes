@@ -9,15 +9,17 @@ package mytunes.BE;
  *
  * @author Stefan-VpcEB3J1E
  */
-public class Song {
-    
+public class Song
+{
+
     private final int id;
     private String artist;
     private String title;
     private final String filePath;
     private final double duration;
 
-    public Song(int id, String artist, String title, String filePath, double duration) {
+    public Song(int id, String artist, String title, String filePath, double duration)
+    {
         this.id = id;
         this.artist = artist;
         this.title = title;
@@ -25,32 +27,39 @@ public class Song {
         this.duration = duration;
     }
 
-    public String getArtist() {
+    public String getArtist()
+    {
         return artist;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(String artist)
+    {
         this.artist = artist;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public String getFilePath() {
+    public String getFilePath()
+    {
         return filePath;
     }
 
-    public double getDuration() {
+    public double getDuration()
+    {
         return duration;
     }
-    
+
 }
