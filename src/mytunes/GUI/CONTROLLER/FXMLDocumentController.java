@@ -13,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import mytunes.BE.Playlist;
+import mytunes.BE.Song;
 
 /**
  *
@@ -38,9 +40,9 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Playlist, String> columnPlaylistName;
     @FXML
-    private TableColumn<Playlist, int> columnSongNumber;
+    private TableColumn<Playlist, Integer> columnSongNumber;
     @FXML
-    private TableColumn<Playlist, int> columnPlaylistTime;
+    private TableColumn<Playlist, Integer> columnPlaylistTime;
     
     @FXML
     private TableView<Song> tblSong;
@@ -51,15 +53,9 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Song, String> coulmnCategory; 
     @FXML
-    private TableColumn<Song, int> columnSongTime;
+    private TableColumn<Song, Integer> columnSongTime;
     
-    
-    @FXML
-    private void handleButtonAction(ActionEvent event)
-    {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb)

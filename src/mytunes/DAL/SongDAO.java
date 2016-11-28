@@ -32,7 +32,7 @@ public class SongDAO
         {
             raf.seek(raf.length());  // place the file pointer at the end of the file.
             raf.writeInt(s.getId());
-            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", s.getName()).substring(0, NAME_SIZE));
+        //    raf.writeBytes(String.format("%-" + NAME_SIZE + "s", s.getName()).substring(0, NAME_SIZE));
         }
     }
 }
