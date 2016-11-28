@@ -62,6 +62,7 @@ public class MyTunes extends Application
             MediaView mediaView = new MediaView(mediaPlayer);
             mediaView.setMediaPlayer(mediaPlayer);
             mediaPlayer.setAutoPlay(true);
+            
         }
 
     }
