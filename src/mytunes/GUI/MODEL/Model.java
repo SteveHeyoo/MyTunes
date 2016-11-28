@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Song;
 import mytunes.BLL.MusicManager;
 
@@ -50,6 +51,9 @@ public class Model
             song = mMgr.addSong(file);
             songs.add(song);
         } catch (IOException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedAudioFileException ex)
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }

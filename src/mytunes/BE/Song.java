@@ -57,6 +57,7 @@ public class Song
         return filePath;
     }
 
+  
     public double getDuration()
     {
         return duration;

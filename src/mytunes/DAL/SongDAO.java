@@ -55,6 +55,11 @@ public class SongDAO
         }
         try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
         {
+            
+            if (raf.length() == 0)
+            {
+                nextId = 1;
+            }
             nextId = raf.readInt();
             raf.seek(raf.length() - raf.length());
             raf.writeInt(nextId + 1);
