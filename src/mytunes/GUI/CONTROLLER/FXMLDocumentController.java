@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 /**
  *
@@ -20,7 +22,37 @@ public class FXMLDocumentController implements Initializable
 {
     
     @FXML
-    private Label label;
+    private Label lblSong;
+    
+    @FXML
+    private Label lblPlaylist;
+    
+    @FXML
+    private Label lblSongPlaylist;
+            
+    @FXML
+    private Label lblFilter;
+    
+    @FXML
+    private TableView<Playlist> tblPlayList;
+    @FXML
+    private TableColumn<Playlist, String> columnPlaylistName;
+    @FXML
+    private TableColumn<Playlist, int> columnSongNumber;
+    @FXML
+    private TableColumn<Playlist, int> columnPlaylistTime;
+    
+    @FXML
+    private TableView<Song> tblSong;
+    @FXML
+    private TableColumn<Song, String> columnTitle;
+    @FXML
+    private TableColumn<Song, String> columnArtist;
+    @FXML
+    private TableColumn<Song, String> coulmnCategory; 
+    @FXML
+    private TableColumn<Song, int> columnSongTime;
+    
     
     @FXML
     private void handleButtonAction(ActionEvent event)
