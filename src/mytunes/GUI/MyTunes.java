@@ -5,6 +5,8 @@
  */
 package mytunes.GUI;
 
+import java.io.File;
+import java.io.RandomAccessFile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,6 +29,7 @@ public class MyTunes extends Application
         
         stage.setScene(scene);
         stage.show();
+       
     }
 
     /**

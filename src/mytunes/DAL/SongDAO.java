@@ -71,6 +71,7 @@ public class SongDAO
             raf.writeBytes(String.format("%-" + NAME_SIZE + "s", title).substring(0, NAME_SIZE));
             raf.writeBytes(String.format("%-" + FILEPATH_SIZE + "s", filePath).substring(0, FILEPATH_SIZE));
         }
+        
         return (new Song(nextId, artist, title, filePath, duration));
     }
 

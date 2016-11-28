@@ -109,8 +109,10 @@ public class FXMLDocumentController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        // TODO
-    }    
+      
+    }
+
+    
 
     @FXML
     private void handleNewSong(ActionEvent event)
@@ -124,5 +126,7 @@ public class FXMLDocumentController implements Initializable
             model.createNewSong(file);
         }
     }
+    
+    
     
 }
