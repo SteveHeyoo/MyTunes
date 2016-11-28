@@ -31,8 +31,26 @@ public class SongDAO
         this.fileName = fileName;
     }
     
-    public void addSong(Song s) throws IOException
+    public Song addSong(File file) throws IOException
     {
+        int idToGive;
+        double duration;
+        String artist;
+        String title;
+        String filePath;
+        
+        try (RandomAccessFile raff = new RandomAccessFile(file.getAbsolutePath(), "rw"))
+        {
+            byte[] artistByte = new byte[30];
+            byte[] titleByte = new byte[30];
+            raff.seek(raff.length()-125);
+            raff.read(titleByte);
+            title = new String(titleByte).trim();
+            raff.read(artistByte);
+            artist = new String(artistByte).trim();
+            
+            
+        }
         try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
         {
             int nextId = raf.readInt();
@@ -40,10 +58,11 @@ public class SongDAO
             raf.writeInt(nextId+1);
             raf.seek(raf.length());  // place the file pointer at the end of the file.
             raf.writeInt(nextId);
-            raf.writeDouble(s.getDuration());    
-            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", s.getArtist()).substring(0, NAME_SIZE));
-            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", s.getTitle()).substring(0, NAME_SIZE));
-            raf.writeBytes(String.format("%-" + FILEPATH_SIZE + "s", s.getFilePath()).substring(0, FILEPATH_SIZE));
+//            raf.writeDouble(s.getDuration());    
+//            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", s.getArtist()).substring(0, NAME_SIZE));
+//            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", s.getTitle()).substring(0, NAME_SIZE));
+//            raf.writeBytes(String.format("%-" + FILEPATH_SIZE + "s", s.getFilePath()).substring(0, FILEPATH_SIZE));
         }
+        return null;
     }
 }

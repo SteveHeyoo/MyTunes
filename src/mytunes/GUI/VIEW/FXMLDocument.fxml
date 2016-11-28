@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="658.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="658.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
       <Label fx:id="lblPlaylist" layoutX="21.0" layoutY="189.0" text="Playlists" />
@@ -41,7 +43,7 @@
       <Button fx:id="btnMoveSongDown" layoutX="397.0" layoutY="607.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="50.0" text="v" />
       <Button fx:id="btnDeleteSong" layoutX="793.0" layoutY="607.0" mnemonicParsing="false" text="Delete" />
       <Button fx:id="btnEditSong" layoutX="709.0" layoutY="607.0" mnemonicParsing="false" text="Edit" />
-      <Button fx:id="btnAddNewSong" layoutX="626.0" layoutY="607.0" mnemonicParsing="false" text="New" />
+      <Button fx:id="btnAddNewSong" layoutX="626.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleNewSong" text="New" />
       <TextField fx:id="txtFieldSearch" layoutX="825.0" layoutY="32.0" />
       <Button fx:id="btnSearch" layoutX="1016.0" layoutY="32.0" mnemonicParsing="false" text="Search" />
       <Label fx:id="lblFilter" layoutX="785.0" layoutY="37.0" text="Filter:" />

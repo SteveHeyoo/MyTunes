@@ -5,6 +5,12 @@
  */
 package mytunes.GUI.MODEL;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mytunes.BE.Song;
 import mytunes.BLL.MusicManager;
 
@@ -17,10 +23,12 @@ public class Model
 
     private static Model INSTANCE;
     private MusicManager mMgr;
+    private ObservableList songs;
 
     private Model()
     {
         mMgr = new MusicManager();
+        songs = FXCollections.observableArrayList();
         //mMgr.addSong(new Song(0, artist, title, filePath, 0));
 
     }
@@ -33,7 +41,22 @@ public class Model
         }
         return INSTANCE;
     }
-    
-    
+
+    public void createNewSong(File file)
+    {
+        Song song;
+        try
+        {
+            song = mMgr.addSong(file);
+            songs.add(song);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
+    }
 
 }

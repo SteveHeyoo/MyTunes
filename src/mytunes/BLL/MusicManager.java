@@ -5,6 +5,7 @@
  */
 package mytunes.BLL;
 
+import java.io.File;
 import java.io.IOException;
 import mytunes.BE.Song;
 import mytunes.DAL.SongDAO;
@@ -24,8 +25,8 @@ public class MusicManager
         songDAO = new SongDAO(FILE_NAME);
     }
     
-    public void addSong(Song s) throws IOException
+    public Song addSong(File file) throws IOException
     {
-        songDAO.addSong(s);
+        return songDAO.addSong(file);
     }
 }
