@@ -57,7 +57,9 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Song, String> columnArtist;
     @FXML
-    private TableColumn<Song, Double> columnSongTime;
+    private TableColumn<Song, Double> columnTime;
+    @FXML
+    private TableColumn<Song, String> columnSongTime;
     @FXML
     private TableColumn<?, ?> columnCategory;
     @FXML
@@ -74,9 +76,6 @@ public class FXMLDocumentController implements Initializable
     private ListView<?> listPlaylistSong;
     @FXML
     private Button addSongToPlaylist;
-
-    @FXML
-    private TableColumn<?, ?> columnTime;
 
     @FXML
     private Button btnClose;
@@ -121,7 +120,7 @@ public class FXMLDocumentController implements Initializable
         //I define the mapping of the table's columns to the objects that are added to it.
         columnTitle.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getTitle()));
         columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
-//        columnSongTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDuration()));
+        columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDuration()));
 
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
