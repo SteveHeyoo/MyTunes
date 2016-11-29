@@ -78,7 +78,14 @@ public class SongDAO
         
         return (new Song(nextId, artist, title, filePath, duration));
     }
-
+    
+    /**
+     * Method that calculates the duration of a song and returns the duration as a double
+     * @param file
+     * @return the duration of a song as a double
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     private double getDuration(File file) throws IOException, UnsupportedAudioFileException
     {
 
@@ -95,6 +102,11 @@ public class SongDAO
 //            int min = (mili / 1000) / 60;
     }
     
+    /**
+     * Reads all the songs in the Songs.dat file and returns the songs as a list
+     * @return List of all songs
+     * @throws IOException 
+     */
     public List<Song> getAllSongs() throws IOException
     {   
         try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
@@ -114,7 +126,13 @@ public class SongDAO
         }
                 
     }
-    
+    /**
+     * Reads the Songs.dat file where the filePointer currently is and returns a Song with the read attributes.
+     * Used in getAllSongs method
+     * @param raf
+     * @return Song
+     * @throws IOException 
+     */
     private Song getOneSong(final RandomAccessFile raf) throws IOException
     {
         byte[] nameBytes = new byte[NAME_SIZE];
@@ -142,7 +160,12 @@ public class SongDAO
         return new Song(id, artist, title , filePath, duration);   
     }
     
-
+    /**
+     * Removes the song with the given id in our Songs.dat file by overwriting all the data with zeros
+     * @param id
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public void removeSongById(int id) throws FileNotFoundException, IOException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
