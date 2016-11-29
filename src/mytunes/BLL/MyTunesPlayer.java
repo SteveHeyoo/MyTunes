@@ -27,5 +27,10 @@ public class MyTunesPlayer
         media = new Media(file.toURI().toString());
         mediaPlayer = new MediaPlayer(media);
     }
+    
+    public MediaPlayer getMediaPlayer()
+    {
+        return mediaPlayer;
+    }
 
 }

@@ -64,9 +64,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Song, String> columnArtist;
     @FXML
-    private TableColumn<Song, Double> columnTime;
-    @FXML
-    private TableColumn<Song, String> columnSongTime;
+    private TableColumn<Song, String> columnTime;
     @FXML
     private TableColumn<?, ?> columnCategory;
     @FXML
@@ -127,7 +125,7 @@ public class FXMLDocumentController implements Initializable
         //I define the mapping of the table's columns to the objects that are added to it.
         columnTitle.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getTitle()));
         columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
-        columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDuration()));
+        columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDurationInMinutes()));
 
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
@@ -180,6 +178,24 @@ public class FXMLDocumentController implements Initializable
                             ).getSelectedItem();
             loadSongDataView(selectedSong);
         }
+    }
+
+    @FXML
+    private void handleTblViewMouseClick(MouseEvent event)
+    {
+        Song song = tblSong.getSelectionModel().getSelectedItem();
+        
+        if (event.getClickCount() == 2 && song != null)
+        {
+            model.playSong(song);
+        }
+    }
+
+    @FXML
+    private void handleTblViewSongsDelete(ActionEvent event)
+    {
+        Song song = tblSong.getSelectionModel().getSelectedItem();
+        model.deleteSong(song);
     }
 
 }

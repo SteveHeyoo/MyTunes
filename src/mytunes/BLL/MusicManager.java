@@ -16,8 +16,9 @@ import mytunes.DAL.SongDAO;
  *
  * @author Stefan-VpcEB3J1E
  */
-public class MusicManager 
+public class MusicManager
 {
+
     private static final String FILE_NAME = "Songs.dat";
 
     private SongDAO songDAO;
@@ -26,14 +27,19 @@ public class MusicManager
     {
         songDAO = new SongDAO(FILE_NAME);
     }
-    
+
     public Song addSong(File file) throws IOException, UnsupportedAudioFileException
     {
         return songDAO.addSong(file);
     }
-    
+
     public List<Song> getAllSongs() throws IOException
     {
         return songDAO.getAllSongs();
+    }
+
+    public void deleteSong(int id) throws IOException
+    {
+        songDAO.removeSongById(id);
     }
 }
