@@ -143,39 +143,38 @@ public class FXMLDocumentController implements Initializable
             model.createNewSong(file);
         }
     }
-    
+
     private void loadSongDataView(Song song) throws IOException
     {
         // Fetches primary stage and gets loader and loads FXML file to Parent
-        Stage primStage = (Stage)tblSong.getScene().getWindow();
+        Stage primStage = (Stage) tblSong.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("SongEdit.fxml"));
         Parent root = loader.load();
-        
+
         // Fetches controller from patient view
-        SongEditController songEditController =
-                loader.getController();
-        
+        SongEditController songEditController
+                = loader.getController();
+
         songEditController.setSong(song);
-        
+
         // Sets new stage as modal window
         Stage stageSongEdit = new Stage();
         stageSongEdit.setScene(new Scene(root));
-        
+
         stageSongEdit.initModality(Modality.WINDOW_MODAL);
         stageSongEdit.initOwner(primStage);
-        
+
         stageSongEdit.show();
     }
-    
+
     @FXML
     private void mousePressedOnTableView(MouseEvent event) throws IOException
     {
         // Check double-click left mouse button
-        if(event.isSecondaryButtonDown() && event.getClickCount()==1)
+        if (event.isSecondaryButtonDown() && event.getClickCount() == 1)
         {
-            Song selectedSong = tblSong.getSelectionModel(
-                            ).getSelectedItem();
+            Song selectedSong = tblSong.getSelectionModel().getSelectedItem();
             loadSongDataView(selectedSong);
         }
     }
@@ -184,7 +183,7 @@ public class FXMLDocumentController implements Initializable
     private void handleTblViewMouseClick(MouseEvent event)
     {
         Song song = tblSong.getSelectionModel().getSelectedItem();
-        
+
         if (event.getClickCount() == 2 && song != null)
         {
             model.playSong(song);
@@ -202,21 +201,21 @@ public class FXMLDocumentController implements Initializable
     private void handleNewPlaylist(ActionEvent event) throws IOException
     {
         // TODO Display the New/Edit gui to enter a name to the new playlist
-              Stage primStage = (Stage) tblSong.getScene().getWindow();
+        Stage primStage = (Stage) tblSong.getScene().getWindow();
         //mvc pattern til fxml sti
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mytunes/GUI/VIEW/NewEditPlaylistView.fxml"));
-        
+
         Parent root = loader.load();
-        
+
         //Fethes controller from patient view
         NewEditPlaylistViewController patientViewController = loader.getController();
-        
+
         // sets new stage as modal window
         Stage stagePatientView = new Stage();
         stagePatientView.setScene(new Scene(root));
         stagePatientView.initModality(Modality.WINDOW_MODAL);
         stagePatientView.initOwner(primStage);
-        
+
         stagePatientView.show();
     }
 
