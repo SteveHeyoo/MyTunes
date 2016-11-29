@@ -6,6 +6,7 @@
 package mytunes.DAL;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Map;
@@ -92,18 +93,26 @@ public class SongDAO
 //            int min = (mili / 1000) / 60;
     }
     
-<<<<<<< HEAD
-    public void Dweweqw()    
+    public void removeSongById(int id) throws FileNotFoundException, IOException
     {
-        System.out.println("    sasasadsad");
-    }
-=======
-    public void removeSongById(int id)
-    {
+        try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
+        {
+            for (int i = ID_SIZE; i < raf.length(); i += WRITE_SIZE)
+            {
+                raf.seek(i);
+                int readId = raf.readInt();
+                if (readId == id)
+                {
+                    raf.seek(i);
+                    byte[] overWriteBytes = new byte[WRITE_SIZE];
+                    raf.write(overWriteBytes);
+                    return;
+                }
+                
+            }
+        }
     }
     
     
-
->>>>>>> origin/master
 
 }
