@@ -92,6 +92,11 @@ public class SongDAO
 //            int min = (mili / 1000) / 60;
     }
     
+    public void removeSongById(int id)
+    {
+    }
+    
+    
 
 
 }
