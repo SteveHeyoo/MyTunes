@@ -18,6 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -29,26 +30,26 @@ import mytunes.GUI.MODEL.Model;
  */
 public class FXMLDocumentController implements Initializable
 {
-    
+
     @FXML
     private Label lblSong;
-    
+
     @FXML
     private Label lblPlaylist;
-    
+
     @FXML
     private Label lblSongPlaylist;
-            
+
     @FXML
     private Label lblFilter;
-    
+
     @FXML
     private TableColumn<Playlist, String> columnPlaylistName;
     @FXML
     private TableColumn<Playlist, Integer> columnSongNumber;
     @FXML
     private TableColumn<Playlist, Integer> columnPlaylistTime;
-    
+
     @FXML
     private TableView<Song> tblSong;
     @FXML
@@ -60,7 +61,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<?, ?> columnCategory;
     @FXML
-    private Label label; 
+    private Label label;
     @FXML
     private TableView<?> tblPlaylist;
     @FXML
@@ -73,11 +74,10 @@ public class FXMLDocumentController implements Initializable
     private ListView<?> listPlaylistSong;
     @FXML
     private Button addSongToPlaylist;
-   
-    
+
     @FXML
     private TableColumn<?, ?> columnTime;
-    
+
     @FXML
     private Button btnClose;
     @FXML
@@ -102,48 +102,42 @@ public class FXMLDocumentController implements Initializable
     private TextField txtFieldSearch;
     @FXML
     private Button btnSearch;
-    
+
     private Model model;
 
     public FXMLDocumentController()
     {
         model = Model.getInstance();
     }
-    
 
-    
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         dataBind();
     }
-    
+
     private void dataBind()
     {
         //I define the mapping of the table's columns to the objects that are added to it.
         columnTitle.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getTitle()));
         columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
-        columnSongTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDuration()));
+//        columnSongTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDuration()));
 
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
     }
-
-    
 
     @FXML
     private void handleNewSong(ActionEvent event)
     {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-        
+
         if (file != null)
         {
             // to do
             model.createNewSong(file);
         }
     }
-    
-    
-    
+
 }

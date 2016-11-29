@@ -30,7 +30,9 @@ public class Model
     {
         mMgr = new MusicManager();
         songs = FXCollections.observableArrayList();
+        loadSongs();
         //mMgr.addSong(new Song(0, artist, title, filePath, 0));
+        
 
     }
 
@@ -61,10 +63,23 @@ public class Model
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
+
+    }
+    
+    private void loadSongs()
+    {
+        try
+        {
+            songs.addAll(mMgr.getAllSongs());
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public ObservableList<Song> getAllSongs()
+    {
+        return songs;
     }
 
 }
