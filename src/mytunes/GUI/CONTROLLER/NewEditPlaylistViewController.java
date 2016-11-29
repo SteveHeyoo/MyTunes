@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import mytunes.GUI.MODEL.Model;
 
 /**
  * FXML Controller class
@@ -23,6 +24,14 @@ public class NewEditPlaylistViewController implements Initializable
     @FXML
     private TextField lblNameNewEditPlaylist;
 
+    Model model;
+
+    public NewEditPlaylistViewController()
+    {
+        model = Model.getInstance();
+
+    }
+
     /**
      * Initializes the controller class.
      */
@@ -30,16 +39,18 @@ public class NewEditPlaylistViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         // TODO
-    }    
+    }
 
     @FXML
     private void handleSaveNewPlaylist(ActionEvent event)
     {
+        String playlistName = lblNameNewEditPlaylist.getText().trim();
+
     }
 
     @FXML
     private void handleCancelNewPlaylist(ActionEvent event)
     {
     }
-    
+
 }
