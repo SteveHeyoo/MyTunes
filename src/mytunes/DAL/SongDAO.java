@@ -103,8 +103,13 @@ public class SongDAO
 
             while (raf.getFilePointer()< raf.length())
             {
-                songList.add(getOneSong(raf));
+                Song songToadd = getOneSong(raf);
+                if (songToadd.getId() == 0)
+                {
+                songList.add(songToadd);
+                }
             }
+            
             return songList;
         }
                 
@@ -135,6 +140,7 @@ public class SongDAO
         
 
         return new Song(id, artist, title , filePath, duration);
+        
     }
     
 
