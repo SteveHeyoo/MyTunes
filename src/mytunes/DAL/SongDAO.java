@@ -64,16 +64,16 @@ public class SongDAO
                 raf.writeInt(1);
                 raf.seek(0);
             }
-            nextId = raf.readInt();
+            nextId = raf.readInt(); //header
             raf.seek(raf.length() - raf.length());
-            raf.writeInt(nextId + 1);
+            raf.writeInt(nextId + 1); //+1 on our nextid in our header
             raf.seek(raf.length());  // place the file pointer at the end of the file.
-            raf.writeInt(nextId);
-            duration = getDuration(file);
-            raf.writeDouble(duration);    
-            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", artist).substring(0, NAME_SIZE));
-            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", title).substring(0, NAME_SIZE));
-            raf.writeBytes(String.format("%-" + FILEPATH_SIZE + "s", filePath).substring(0, FILEPATH_SIZE));
+            raf.writeInt(nextId); // id for song
+            duration = getDuration(file); 
+            raf.writeDouble(duration);    //writes the duration on the song
+            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", artist).substring(0, NAME_SIZE)); //Writes artist
+            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", title).substring(0, NAME_SIZE)); // Writes Title
+            raf.writeBytes(String.format("%-" + FILEPATH_SIZE + "s", filePath).substring(0, FILEPATH_SIZE)); //write file_path
         }
         
         return (new Song(nextId, artist, title, filePath, duration));
