@@ -198,4 +198,26 @@ public class FXMLDocumentController implements Initializable
         model.deleteSong(song);
     }
 
+    @FXML
+    private void handleNewPlaylist(ActionEvent event) throws IOException
+    {
+        // TODO Display the New/Edit gui to enter a name to the new playlist
+              Stage primStage = (Stage) tblSong.getScene().getWindow();
+        //mvc pattern til fxml sti
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mytunes/GUI/VIEW/NewEditPlaylistView.fxml"));
+        
+        Parent root = loader.load();
+        
+        //Fethes controller from patient view
+        NewEditPlaylistViewController patientViewController = loader.getController();
+        
+        // sets new stage as modal window
+        Stage stagePatientView = new Stage();
+        stagePatientView.setScene(new Scene(root));
+        stagePatientView.initModality(Modality.WINDOW_MODAL);
+        stagePatientView.initOwner(primStage);
+        
+        stagePatientView.show();
+    }
+
 }

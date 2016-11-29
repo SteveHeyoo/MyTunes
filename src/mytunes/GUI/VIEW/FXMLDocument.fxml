@@ -35,7 +35,7 @@
       </TableView>
       <Label fx:id="lblSong" layoutX="626.0" layoutY="189.0" text="Songs" />
       <Button fx:id="btnClose" layoutX="1036.0" layoutY="613.0" mnemonicParsing="false" text="Close" />
-      <Button fx:id="btnNewPlaylist" layoutX="27.0" layoutY="613.0" mnemonicParsing="false" text="New" />
+      <Button fx:id="btnNewPlaylist" layoutX="27.0" layoutY="613.0" mnemonicParsing="false" onAction="#handleNewPlaylist" text="New" />
       <Button fx:id="btnEditPlaylist" layoutX="97.0" layoutY="613.0" mnemonicParsing="false" text="Edit" />
       <Button fx:id="btnDeletePlaylist" layoutX="163.0" layoutY="613.0" mnemonicParsing="false" text="Delete" />
       <Button fx:id="btnDeleteSongFromPlaylist" layoutX="460.0" layoutY="607.0" mnemonicParsing="false" text="Delete" />
