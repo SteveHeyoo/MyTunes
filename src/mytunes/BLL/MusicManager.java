@@ -37,7 +37,12 @@ public class MusicManager
     {
         return songDAO.getAllSongs();
     }
-
+    
+    /**
+     * Calls the removeSongById in the songDAO class
+     * @param id
+     * @throws IOException 
+     */
     public void deleteSong(int id) throws IOException
     {
         songDAO.removeSongById(id);
