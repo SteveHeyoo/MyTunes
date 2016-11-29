@@ -8,6 +8,7 @@ package mytunes.GUI.CONTROLLER;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,6 +56,10 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Song, String> columnArtist;
     @FXML
+    private TableColumn<Song, Double> columnSongTime;
+    @FXML
+    private TableColumn<?, ?> columnCategory;
+    @FXML
     private Label label; 
     @FXML
     private TableView<?> tblPlaylist;
@@ -68,10 +73,11 @@ public class FXMLDocumentController implements Initializable
     private ListView<?> listPlaylistSong;
     @FXML
     private Button addSongToPlaylist;
-    @FXML
-    private TableColumn<?, ?> columnCategory;
+   
+    
     @FXML
     private TableColumn<?, ?> columnTime;
+    
     @FXML
     private Button btnClose;
     @FXML
@@ -109,7 +115,18 @@ public class FXMLDocumentController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-      
+        dataBind();
+    }
+    
+    private void dataBind()
+    {
+        //I define the mapping of the table's columns to the objects that are added to it.
+        columnTitle.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getTitle()));
+        columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
+        columnSongTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDuration()));
+
+        //I bind the table to a list of data (Empty at startup):
+        tblSong.setItems(model.getAllSongs());
     }
 
     
