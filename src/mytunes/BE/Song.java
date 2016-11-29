@@ -62,5 +62,18 @@ public class Song
     {
         return duration;
     }
+    
+    public String getDurationInMinutes()
+    {
+        long microseconds = (long) duration * 1000000;
+        int mili = (int) (microseconds / 1000);
+        
+        int sec = (mili / 1000) % 60;
+        int min = (mili / 1000) / 60;
+        
+        String minutesAndSeconds ="" + min + ":" + sec;
+        
+        return minutesAndSeconds; 
+    }
 
 }
