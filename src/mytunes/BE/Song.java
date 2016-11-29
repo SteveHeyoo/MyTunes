@@ -18,6 +18,14 @@ public class Song
     private final String filePath;
     private final double duration;
 
+    /**
+     * Constructer. Called when a new song is instansiated
+     * @param id
+     * @param artist
+     * @param title
+     * @param filePath
+     * @param duration 
+     */
     public Song(int id, String artist, String title, String filePath, double duration)
     {
         this.id = id;
@@ -27,42 +35,71 @@ public class Song
         this.duration = duration;
     }
 
+    /**
+     * Gets the songs Artist
+     * @return Artist of the song as a String
+     */
     public String getArtist()
     {
         return artist;
     }
-
+    
+    /**
+     * Sets the song's artist
+     * @param artist 
+     */
     public void setArtist(String artist)
     {
         this.artist = artist;
     }
-
+    
+    /**
+     * Returns the song's title (String)
+     * @return title of the song as a String
+     */
     public String getTitle()
     {
         return title;
     }
-
+    
+    /**
+     * Sets the title of the song to the String given
+     * @param title 
+     */
     public void setTitle(String title)
     {
         this.title = title;
     }
-
+    /**
+     * Returns the unique id of the song
+     * @return the song's unique id (int)
+     */
     public int getId()
     {
         return id;
     }
-
+    
+    /**
+     * Returns the song's file path (String)
+     * @return String path
+     */
     public String getFilePath()
     {
         return filePath;
     }
 
-  
+    /**
+     * Returns the duration of the song in seconds
+     * @return double Seconds
+     */
     public double getDuration()
     {
         return duration;
     }
-    
+    /**
+     * Takes the duration of the song (Seconds) and transforms it to (Minutes:Seconds)
+     * @return String. example: "3:20"
+     */
     public String getDurationInMinutes()
     {
         long microseconds = (long) duration * 1000000;
@@ -75,5 +112,4 @@ public class Song
         
         return minutesAndSeconds; 
     }
-
 }

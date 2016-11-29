@@ -139,8 +139,7 @@ public class SongDAO
         
         
 
-        return new Song(id, artist, title , filePath, duration);
-        
+        return new Song(id, artist, title , filePath, duration);   
     }
     
 
