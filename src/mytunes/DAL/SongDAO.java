@@ -8,6 +8,8 @@ package mytunes.DAL;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
@@ -92,18 +94,47 @@ public class SongDAO
 //            int min = (mili / 1000) / 60;
     }
     
-<<<<<<< HEAD
-    public void Dweweqw()    
-    {
-        System.out.println("    sasasadsad");
+    public List<Song> getAllSongs() throws IOException
+    {   
+        try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
+        {
+            List<Song> songList = new ArrayList<>();
+
+            while (raf.getFilePointer()< raf.length())
+            {
+                songList.add(getOneSong(raf));
+            }
+            return songList;
+        }
+                
     }
-=======
+    
+    private Song getOneSong(final RandomAccessFile raf) throws IOException
+    {
+        byte[] nameBytes = new byte[NAME_SIZE];
+        byte[] pathBytes = new byte[FILEPATH_SIZE];
+        
+        if (raf.getFilePointer() == 0)
+        {
+            raf.seek(ID_SIZE);
+        }
+        int id = raf.readInt();
+        
+        raf.read(nameBytes);
+        String artist = new String(nameBytes).trim();
+        
+        raf.read(nameBytes);
+        String title = new String(nameBytes).trim();
+        
+        raf.read(pathBytes);
+        String filePath = new String(pathBytes).trim();
+        
+        double duration = raf.readDouble(); 
+
+        return new Song(id, artist, title , filePath, duration);
+    }
+    
     public void removeSongById(int id)
     {
     }
-    
-    
-
->>>>>>> origin/master
-
 }
