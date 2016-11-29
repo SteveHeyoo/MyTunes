@@ -184,7 +184,7 @@ public class FXMLDocumentController implements Initializable
     {
         Song song = tblSong.getSelectionModel().getSelectedItem();
 
-        if (event.getClickCount() == 2 && song != null)
+        if (event.getClickCount() == 2 && song != null && event.isPrimaryButtonDown())
         {
             model.playSong(song);
         }
