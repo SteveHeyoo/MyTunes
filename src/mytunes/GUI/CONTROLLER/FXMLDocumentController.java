@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -58,8 +59,6 @@ public class FXMLDocumentController implements Initializable
     private TableColumn<Song, String> columnArtist;
     @FXML
     private TableColumn<Song, Double> columnTime;
-    @FXML
-    private TableColumn<Song, String> columnSongTime;
     @FXML
     private TableColumn<?, ?> columnCategory;
     @FXML
@@ -137,6 +136,24 @@ public class FXMLDocumentController implements Initializable
             // to do
             model.createNewSong(file);
         }
+    }
+
+    @FXML
+    private void handleTblViewMouseClick(MouseEvent event)
+    {
+        Song song = tblSong.getSelectionModel().getSelectedItem();
+        
+        if (event.getClickCount() == 2 && song != null)
+        {
+            model.playSong(song);
+        }
+    }
+
+    @FXML
+    private void handleTblViewSongsDelete(ActionEvent event)
+    {
+        Song song = tblSong.getSelectionModel().getSelectedItem();
+        model.deleteSong(song);
     }
 
 }
