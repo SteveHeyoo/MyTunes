@@ -58,7 +58,8 @@ public class SongDAO
             
             if (raf.length() == 0)
             {
-                nextId = 1;
+                raf.writeInt(1);
+                raf.seek(0);
             }
             nextId = raf.readInt();
             raf.seek(raf.length() - raf.length());
