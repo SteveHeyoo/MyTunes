@@ -92,6 +92,9 @@ public class SongDAO
 //            int min = (mili / 1000) / 60;
     }
     
-
+    public void Dweweqw()    
+    {
+        System.out.println("    sasasadsad");
+    }
 
 }
