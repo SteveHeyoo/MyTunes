@@ -6,12 +6,16 @@
 package mytunes.GUI.CONTROLLER;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,7 +23,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 import mytunes.GUI.MODEL.Model;
@@ -136,6 +143,42 @@ public class FXMLDocumentController implements Initializable
         {
             // to do
             model.createNewSong(file);
+        }
+    }
+    
+    private void loadSongDataView(Song song) throws IOException
+    {
+        // Fetches primary stage and gets loader and loads FXML file to Parent
+        Stage primStage = (Stage)tblSong.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("SongEdit.fxml"));
+        Parent root = loader.load();
+        
+        // Fetches controller from patient view
+        SongEditController songEditController =
+                loader.getController();
+        
+        songEditController.setSong(song);
+        
+        // Sets new stage as modal window
+        Stage stageSongEdit = new Stage();
+        stageSongEdit.setScene(new Scene(root));
+        
+        stageSongEdit.initModality(Modality.WINDOW_MODAL);
+        stageSongEdit.initOwner(primStage);
+        
+        stageSongEdit.show();
+    }
+    
+    @FXML
+    private void mousePressedOnTableView(MouseEvent event) throws IOException
+    {
+        // Check double-click left mouse button
+        if(event.isSecondaryButtonDown() && event.getClickCount()==1)
+        {
+            Song selectedSong = tblSong.getSelectionModel(
+                            ).getSelectedItem();
+            loadSongDataView(selectedSong);
         }
     }
 

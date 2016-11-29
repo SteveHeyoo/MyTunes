@@ -17,7 +17,7 @@ public class Song
     private String title;
     private final String filePath;
     private final double duration;
-
+   
     public Song(int id, String artist, String title, String filePath, double duration)
     {
         this.id = id;
