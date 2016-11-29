@@ -92,9 +92,18 @@ public class SongDAO
 //            int min = (mili / 1000) / 60;
     }
     
+<<<<<<< HEAD
     public void Dweweqw()    
     {
         System.out.println("    sasasadsad");
     }
+=======
+    public void removeSongById(int id)
+    {
+    }
+    
+    
+
+>>>>>>> origin/master
 
 }
