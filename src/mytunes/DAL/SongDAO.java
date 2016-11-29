@@ -104,7 +104,7 @@ public class SongDAO
             while (raf.getFilePointer()< raf.length())
             {
                 Song songToadd = getOneSong(raf);
-                if (songToadd.getId() == 0)
+                if (songToadd.getId() != 0)
                 {
                 songList.add(songToadd);
                 }
