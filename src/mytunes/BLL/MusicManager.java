@@ -7,6 +7,7 @@ package mytunes.BLL;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Song;
 import mytunes.DAL.SongDAO;
@@ -29,5 +30,10 @@ public class MusicManager
     public Song addSong(File file) throws IOException, UnsupportedAudioFileException
     {
         return songDAO.addSong(file);
+    }
+    
+    public List<Song> getAllSongs() throws IOException
+    {
+        return songDAO.getAllSongs();
     }
 }

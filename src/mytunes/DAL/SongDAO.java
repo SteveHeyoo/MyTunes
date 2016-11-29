@@ -121,6 +121,8 @@ public class SongDAO
         }
         int id = raf.readInt();
         
+        double duration = raf.readDouble(); 
+        
         raf.read(nameBytes);
         String artist = new String(nameBytes).trim();
         
@@ -130,7 +132,7 @@ public class SongDAO
         raf.read(pathBytes);
         String filePath = new String(pathBytes).trim();
         
-        double duration = raf.readDouble(); 
+        
 
         return new Song(id, artist, title , filePath, duration);
     }
