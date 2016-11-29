@@ -52,10 +52,6 @@ public class Model
         try
         {
             song = mMgr.addSong(file);
-            System.out.println(song.getArtist());
-            System.out.println(song.getTitle());
-            System.out.println(song.getDuration());
-            System.out.println(song.getId());
             songs.add(song);
         } catch (IOException ex)
         {

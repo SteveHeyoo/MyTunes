@@ -184,7 +184,7 @@ public class FXMLDocumentController implements Initializable
     {
         Song song = tblSong.getSelectionModel().getSelectedItem();
 
-        if (event.getClickCount() == 2 && song != null && event.isPrimaryButtonDown())
+        if (event.getClickCount() == 2 && song != null)
         {
             model.playSong(song);
         }
@@ -208,15 +208,18 @@ public class FXMLDocumentController implements Initializable
         Parent root = loader.load();
 
         //Fethes controller from patient view
-        NewEditPlaylistViewController patientViewController = loader.getController();
+        NewEditPlaylistViewController newEditController = loader.getController();
 
         // sets new stage as modal window
-        Stage stagePatientView = new Stage();
-        stagePatientView.setScene(new Scene(root));
-        stagePatientView.initModality(Modality.WINDOW_MODAL);
-        stagePatientView.initOwner(primStage);
+        Stage stageNewEditPlaylist = new Stage();
+        stageNewEditPlaylist.setScene(new Scene(root));
+        stageNewEditPlaylist.initModality(Modality.WINDOW_MODAL);
+        stageNewEditPlaylist.initOwner(primStage);
+        stageNewEditPlaylist.setResizable(false);
+    
+        
 
-        stagePatientView.show();
+        stageNewEditPlaylist.show();
     }
 
 }
