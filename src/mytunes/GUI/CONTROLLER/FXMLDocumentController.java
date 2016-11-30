@@ -22,7 +22,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -40,22 +39,17 @@ public class FXMLDocumentController implements Initializable
 
     @FXML
     private Label lblSong;
-
-    @FXML
-    private Label lblPlaylist;
-
     @FXML
     private Label lblSongPlaylist;
 
     @FXML
-    private Label lblFilter;
-
+    private TableView<Playlist> tblPlaylist;
     @FXML
     private TableColumn<Playlist, String> columnPlaylistName;
     @FXML
-    private TableColumn<Playlist, Integer> columnSongNumber;
+    private TableColumn<Playlist, String> columnPlaylistNumberOfSongs;
     @FXML
-    private TableColumn<Playlist, Integer> columnPlaylistTime;
+    private TableColumn<Playlist, String> columnPlaylistTotalDuration;
 
     @FXML
     private TableView<Song> tblSong;
@@ -67,45 +61,12 @@ public class FXMLDocumentController implements Initializable
     private TableColumn<Song, String> columnTime;
     @FXML
     private TableColumn<?, ?> columnCategory;
-    @FXML
-    private Label label;
-    @FXML
-    private TableView<?> tblPlaylist;
-    @FXML
-    private Button btnPreviousSong;
-    @FXML
-    private Button btnPlaySong;
-    @FXML
-    private Button btnNextSong;
-    @FXML
-    private ListView<?> listPlaylistSong;
-    @FXML
-    private Button addSongToPlaylist;
 
     @FXML
-    private Button btnClose;
-    @FXML
-    private Button btnNewPlaylist;
-    @FXML
-    private Button btnEditPlaylist;
-    @FXML
-    private Button btnDeletePlaylist;
-    @FXML
-    private Button btnDeleteSongFromPlaylist;
-    @FXML
-    private Button btnMoveSongUp;
-    @FXML
-    private Button btnMoveSongDown;
-    @FXML
-    private Button btnDeleteSong;
-    @FXML
-    private Button btnEditSong;
-    @FXML
-    private Button btnAddNewSong;
+    private ListView<?> listPlaylistSong;
+
     @FXML
     private TextField txtFieldSearch;
-    @FXML
-    private Button btnSearch;
 
     private Model model;
 
@@ -168,7 +129,6 @@ public class FXMLDocumentController implements Initializable
         stageSongEdit.show();
     }
 
-    @FXML
     private void mousePressedOnTableView(MouseEvent event) throws IOException
     {
         // Check double-click left mouse button
@@ -216,8 +176,6 @@ public class FXMLDocumentController implements Initializable
         stageNewEditPlaylist.initModality(Modality.WINDOW_MODAL);
         stageNewEditPlaylist.initOwner(primStage);
         stageNewEditPlaylist.setResizable(false);
-    
-        
 
         stageNewEditPlaylist.show();
     }

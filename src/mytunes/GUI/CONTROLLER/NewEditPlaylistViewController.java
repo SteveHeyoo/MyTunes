@@ -5,6 +5,7 @@
  */
 package mytunes.GUI.CONTROLLER;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -42,7 +43,7 @@ public class NewEditPlaylistViewController implements Initializable
     }
 
     @FXML
-    private void handleSaveNewPlaylist(ActionEvent event)
+    private void handleSaveNewPlaylist(ActionEvent event) throws IOException
     {
         String playlistName = lblNameNewEditPlaylist.getText().trim();
         model.createNewPlaylist(playlistName);
