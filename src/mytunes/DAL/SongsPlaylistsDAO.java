@@ -125,14 +125,9 @@ public class SongsPlaylistsDAO
                     songList.add(songToadd);
                 }
             }
-
             return songList;
-
         }         
-
-        }
-
-    
+    }
 
     /**
      * Reads the Songs.dat file where the filePointer currently is and returns a
@@ -169,7 +164,7 @@ public class SongsPlaylistsDAO
     
     public List<Playlist> getAllPlayLists() throws IOException
     {   
-        try (RandomAccessFile raf = new RandomAccessFile(new File("Playlist.dat"), "rw"))
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_PLAYLISTS), "rw"))
         {
             List<Playlist> playlistList = new ArrayList<>();
 
@@ -239,7 +234,7 @@ public class SongsPlaylistsDAO
 
     public void removePlayListById(int id) throws IOException
     {
-        try (RandomAccessFile raf = new RandomAccessFile(new File("Playlists.dat"), "rw"))
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_PLAYLISTS), "rw"))
         {
             for (int i = ID_SIZE; i < raf.length(); i += WRITE_SIZE_PLAYLIST)
             {
