@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mytunes.GUI.MODEL.Model;
 
 /**
@@ -47,6 +48,9 @@ public class NewEditPlaylistViewController implements Initializable
     {
         String playlistName = lblNameNewEditPlaylist.getText().trim();
         model.createNewPlaylist(playlistName);
+        
+        Stage getStage = (Stage) lblNameNewEditPlaylist.getScene().getWindow();
+        getStage.close();
         
 
     }
