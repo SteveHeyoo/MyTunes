@@ -30,6 +30,7 @@ public class SongDAO
     private static final int FILEPATH_SIZE = 200;
     private static final int WRITE_SIZE = ID_SIZE + DURATION_SIZE + (NAME_SIZE * 2) + FILEPATH_SIZE;
 
+    private static final int WRITE_SIZE_PLAYLIST = ID_SIZE + NAME_SIZE;
     private final String fileName;
 
     public SongDAO(String fileName)
@@ -180,8 +181,26 @@ public class SongDAO
                     byte[] overWriteBytes = new byte[WRITE_SIZE];
                     raf.write(overWriteBytes);
                     return;
-                }
-                
+                }               
+            }
+        }
+    }
+    
+    public void removePlayListById(int id) throws IOException
+    {
+        try (RandomAccessFile raf = new RandomAccessFile(new File("Playlists.dat"), "rw"))
+        {
+            for (int i = ID_SIZE; i < raf.length(); i += WRITE_SIZE_PLAYLIST)
+            {
+                raf.seek(i);
+                int readId = raf.readInt();
+                if (readId == id)
+                {
+                    raf.seek(i);
+                    byte[] overWriteBytes = new byte[WRITE_SIZE_PLAYLIST];
+                    raf.write(overWriteBytes);
+                    return;
+                }               
             }
         }
     }
