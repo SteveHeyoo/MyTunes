@@ -213,7 +213,7 @@ public class FXMLDocumentController implements Initializable
     }
             
     
-
+    @FXML
     private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
