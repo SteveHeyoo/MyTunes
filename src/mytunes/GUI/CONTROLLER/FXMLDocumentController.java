@@ -232,15 +232,14 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
+    @FXML
     private void handleSearch3(KeyEvent event)
     {
         String query = txtFieldSearch.getText().trim();
-        
+
         List<Song> searchResult = null;
         searchResult = model.filterSongs(query);
         model.setSongs(searchResult);
     }
-    
-    
 
 }

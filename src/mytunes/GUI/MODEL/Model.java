@@ -130,7 +130,9 @@ public class Model
         try
         {
             mMgr.deletePlaylist(playlist.getId());
+            
             playlists.remove(playlist);
+            
         } catch (IOException ex)
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
