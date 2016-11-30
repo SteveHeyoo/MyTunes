@@ -47,7 +47,7 @@
       <Button layoutX="793.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleTblViewSongsDelete" text="Delete" />
       <Button layoutX="709.0" layoutY="607.0" mnemonicParsing="false" text="Edit" />
       <Button layoutX="626.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleNewSong" text="New" />
-      <TextField fx:id="txtFieldSearch" layoutX="825.0" layoutY="32.0" />
+      <TextField fx:id="txtFieldSearch" layoutX="825.0" layoutY="32.0" onKeyReleased="#handleSearch3" />
       <Button layoutX="1016.0" layoutY="32.0" mnemonicParsing="false" text="Search" />
       <Label layoutX="785.0" layoutY="37.0" text="Filter:" />
     </children>

@@ -6,7 +6,9 @@
 package mytunes.BLL;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
@@ -68,4 +70,21 @@ public class MusicManager
     {
         sPlDAO.removePlayListById(id);
     }
+    
+    public List<Song> search(String query) throws FileNotFoundException, IOException
+    {
+        List<Song> allWords = getAllSongs();
+        List<Song> searchList = new ArrayList<>();
+        
+        for(int i = 0; i< allWords.size(); i++) 
+        {
+            if(allWords.get(i).getAllSongStringInfo().toLowerCase().contains(query.toLowerCase())) 
+            {
+                searchList.add(allWords.get(i));
+            }
+        }
+        
+        return searchList;
+    }
+    
 }

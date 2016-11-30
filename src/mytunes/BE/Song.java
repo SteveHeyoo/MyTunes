@@ -125,4 +125,12 @@ public class Song
         
         return minutesAndSeconds; 
     }
+    /**
+     * Returns the artist and the title in one string
+     * @return 
+     */
+    public String getAllSongStringInfo()
+    {
+        return artist + " " + title;
+    }
 }
