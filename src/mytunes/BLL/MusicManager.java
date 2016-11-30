@@ -53,4 +53,19 @@ public class MusicManager
     {
         return sPlDAO.createNewPlaylist(playlistName);
     }
+    
+    
+    public List<Playlist> getAllPlayLists() throws IOException
+    {
+        return sPlDAO.getAllPlayLists();
+    }
+    /**
+     * Calls the removePlaylistById in the songDAO class
+     * @param id
+     * @throws IOException 
+     */
+    public void deletePlaylist(int id) throws IOException
+    {
+        sPlDAO.removePlayListById(id);
+    }
 }
