@@ -7,6 +7,7 @@ package mytunes.GUI.MODEL;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -133,8 +134,27 @@ public class Model
         }
     }
     
-    public void editSong(Song song)
+
+    public List<Song> filterSongs(String query)
     {
-        
+        List<Song> songList = null;
+        try
+        {
+            songList = mMgr.search(query);
+            
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return songList;
     }
+    
+    public void setSongs(List<Song> songList)
+    {
+        songs.clear();
+        songs.addAll(songList);
+    }
+    
+
 }

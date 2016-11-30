@@ -8,6 +8,7 @@ package mytunes.GUI.CONTROLLER;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -198,6 +201,7 @@ public class FXMLDocumentController implements Initializable
     }
 
     @FXML
+
     private void handleSongEdit(ActionEvent event)
     {
         Song song = tblSong.getSelectionModel().getSelectedItem();
@@ -212,4 +216,17 @@ public class FXMLDocumentController implements Initializable
     }
             
     
+
+    private void handleSearch3(KeyEvent event)
+    {
+        String query = txtFieldSearch.getText().trim();
+        
+        List<Song> searchResult = null;
+        searchResult = model.filterSongs(query);
+        model.setSongs(searchResult);
+    }
+    
+    
+
+
 }

@@ -44,17 +44,41 @@ public class SongsPlaylistsDAO
         double duration;
         String artist;
         String title;
+        String tag;
         String filePath = file.getAbsolutePath();
 
         try (RandomAccessFile raff = new RandomAccessFile(filePath, "rw"))
         {
             byte[] artistByte = new byte[30];
             byte[] titleByte = new byte[30];
-            raff.seek(raff.length() - 125);
+            byte[] tagByte = new byte[3];
+            raff.seek(raff.length() - 128);
+            raff.read(tagByte);
+            tag= new String(tagByte).trim();
+            //System.out.println("Tag:" + tag);
             raff.read(titleByte);
-            title = new String(titleByte).trim();
+            
+            if (tag.equals("TAG"))
+            {
+                title = new String(titleByte).trim();
+            }
+            else
+            {
+                title = file.getName();
+            }
+            
             raff.read(artistByte);
-            artist = new String(artistByte).trim();
+            
+            if (tag.equals("TAG"))
+            {
+                artist = new String(artistByte).trim();
+            }
+            else
+            {
+                artist = "";
+            }
+                    
+            
 
         }
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_SONGS), "rw"))
@@ -79,7 +103,7 @@ public class SongsPlaylistsDAO
 
         return (new Song(nextId, artist, title, filePath, duration));
     }
-
+    
     /**
      * Method that calculates the duration of a song and returns the duration as
      * a double
