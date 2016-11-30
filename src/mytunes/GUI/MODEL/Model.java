@@ -132,4 +132,9 @@ public class Model
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void editSong(Song song)
+    {
+        
+    }
 }

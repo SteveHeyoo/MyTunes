@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -122,7 +124,7 @@ public class FXMLDocumentController implements Initializable
         // Fetches primary stage and gets loader and loads FXML file to Parent
         Stage primStage = (Stage) tblSong.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("SongEdit.fxml"));
+                getClass().getResource("/mytunes/GUI/VIEW/SongEdit.fxml"));
         Parent root = loader.load();
 
         // Fetches controller from patient view
@@ -141,15 +143,7 @@ public class FXMLDocumentController implements Initializable
         stageSongEdit.show();
     }
 
-    private void mousePressedOnTableView(MouseEvent event) throws IOException
-    {
-        // Check double-click left mouse button
-        if (event.isSecondaryButtonDown() && event.getClickCount() == 1)
-        {
-            Song selectedSong = tblSong.getSelectionModel().getSelectedItem();
-            loadSongDataView(selectedSong);
-        }
-    }
+
 
     @FXML
     private void handleTblViewMouseClick(MouseEvent event)
@@ -203,4 +197,19 @@ public class FXMLDocumentController implements Initializable
         model.deletPlaylist(playlist);
     }
 
+    @FXML
+    private void handleSongEdit(ActionEvent event)
+    {
+        Song song = tblSong.getSelectionModel().getSelectedItem();
+        try
+        {
+            loadSongDataView(song);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+            
+    
 }
