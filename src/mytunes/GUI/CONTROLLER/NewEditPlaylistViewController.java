@@ -45,6 +45,7 @@ public class NewEditPlaylistViewController implements Initializable
     private void handleSaveNewPlaylist(ActionEvent event)
     {
         String playlistName = lblNameNewEditPlaylist.getText().trim();
+        model.createNewPlaylist(playlistName);
 
     }
 
