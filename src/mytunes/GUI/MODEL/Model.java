@@ -149,6 +149,7 @@ public class Model
         }
     }
 
+
     public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo)
     {
         try
@@ -164,4 +165,27 @@ public class Model
         
         
     }
+    
+    public List<Song> filterSongs(String query)
+    {
+        List<Song> songList = null;
+        try
+        {
+            songList = mMgr.search(query);
+            
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return songList;
+    }
+    
+    public void setSongs(List<Song> songList)
+    {
+        songs.clear();
+        songs.addAll(songList);
+    }
+    
+
 }

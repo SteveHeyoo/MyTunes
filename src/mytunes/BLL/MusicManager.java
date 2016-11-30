@@ -6,6 +6,7 @@
 package mytunes.BLL;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,7 @@ public class MusicManager
         sPlDAO.removePlayListById(id);
     }
 
+
     public List<Song> getSongsByPlaylistId(int playlistId) throws IOException
     {
         List<Song> returnList = new ArrayList<>();
@@ -105,4 +107,23 @@ public class MusicManager
         rDAO.addSongToPlaylist(songId, playlistId);
         
     }
+
+    
+    public List<Song> search(String query) throws FileNotFoundException, IOException
+    {
+        List<Song> allWords = getAllSongs();
+        List<Song> searchList = new ArrayList<>();
+        
+        for(int i = 0; i< allWords.size(); i++) 
+        {
+            if(allWords.get(i).getAllSongStringInfo().toLowerCase().contains(query.toLowerCase())) 
+            {
+                searchList.add(allWords.get(i));
+            }
+        }
+        
+        return searchList;
+    }
+    
+
 }
