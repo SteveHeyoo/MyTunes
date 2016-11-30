@@ -107,6 +107,7 @@ public class Model
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
     public void createNewPlaylist(String playlistName) throws IOException
     {
@@ -118,5 +119,17 @@ public class Model
     {
         return playlists;
     }
-
+    
+    public void deletPlaylist(Playlist playlist)
+    {
+        try
+        {
+            mMgr.deletePlaylist(playlist.getId());
+            playlists.remove(playlist);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -69,6 +69,14 @@ public class FXMLDocumentController implements Initializable
     private TextField txtFieldSearch;
 
     private Model model;
+    @FXML
+    private Button btnPreviousSong;
+    @FXML
+    private Button btnPlaySong;
+    @FXML
+    private Button btnNextSong;
+    @FXML
+    private Button addSongToPlaylist;
 
     public FXMLDocumentController()
     {
@@ -184,6 +192,13 @@ public class FXMLDocumentController implements Initializable
         stageNewEditPlaylist.show();
         
         
+    }
+
+    @FXML
+    private void handleDeletePlayList(ActionEvent event)
+    {
+        Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
+        model.deletPlaylist(playlist);
     }
 
 }
