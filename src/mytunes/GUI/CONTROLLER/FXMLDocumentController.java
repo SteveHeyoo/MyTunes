@@ -106,6 +106,8 @@ public class FXMLDocumentController implements Initializable
     private void handleNewSong(ActionEvent event)
     {
         FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter mp3Filter = new FileChooser.ExtensionFilter("MP3 Files(*.mp3)", "*.mp3");
+        fileChooser.getExtensionFilters().add(mp3Filter);
         File file = fileChooser.showOpenDialog(null);
 
         if (file != null)
