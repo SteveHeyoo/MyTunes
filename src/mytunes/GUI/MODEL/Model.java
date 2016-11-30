@@ -168,6 +168,7 @@ public class Model
         
     }
     
+
     public List<Song> filterSongs(String query)
     {
         List<Song> songList = null;

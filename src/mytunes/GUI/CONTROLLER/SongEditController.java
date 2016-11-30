@@ -7,9 +7,12 @@ package mytunes.GUI.CONTROLLER;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import mytunes.BE.Song;
 
@@ -31,6 +34,24 @@ public class SongEditController implements Initializable
     private TextField txtFile;
     
     private Song currentSong;
+    @FXML
+    private Label lblSongInfo;
+    @FXML
+    private Label lblTitle;
+    @FXML
+    private Label lblArtist;
+    @FXML
+    private Label lblCategory;
+    @FXML
+    private Button btnCancel;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Label lblTime;
+    @FXML
+    private Label lblFile;
+    @FXML
+    private Button btnChoose;
     
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -50,6 +71,11 @@ public class SongEditController implements Initializable
         txtTime.setText(currentSong.getDuration()+"");
         txtFile.setText(currentSong.getFilePath());
         
+    }
+
+    @FXML
+    private void handleSaveSong(ActionEvent event)
+    {
     }
     
 }
