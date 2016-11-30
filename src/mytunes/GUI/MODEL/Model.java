@@ -34,7 +34,8 @@ public class Model
         mMgr = new MusicManager();
         songs = FXCollections.observableArrayList();
         playlists = FXCollections.observableArrayList();
-        loadSongs();
+        loadSongsAndPlaylists();
+        
         //mMgr.addSong(new Song(0, artist, title, filePath, 0));
 
     }
@@ -65,10 +66,11 @@ public class Model
 
     }
 
-    private void loadSongs()
+    private void loadSongsAndPlaylists()
     {
         try
         {
+            playlists.addAll(mMgr.getAllPlayLists());
             songs.addAll(mMgr.getAllSongs());
         } catch (IOException ex)
         {
@@ -96,7 +98,6 @@ public class Model
 
     public void deleteSong(Song song)
     {
-
         try
         {
             mMgr.deleteSong(song.getId());
