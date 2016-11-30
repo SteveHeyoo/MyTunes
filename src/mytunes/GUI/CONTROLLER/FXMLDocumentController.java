@@ -68,7 +68,7 @@ public class FXMLDocumentController implements Initializable
     private TableColumn<?, ?> columnCategory;
 
     @FXML
-    private ListView<?> listPlaylistSong;
+    private ListView<Song> listPlaylistSong;
 
     @FXML
     private TextField txtFieldSearch;
@@ -80,8 +80,6 @@ public class FXMLDocumentController implements Initializable
     private Button btnPlaySong;
     @FXML
     private Button btnNextSong;
-    @FXML
-    private Button addSongToPlaylist;
 
     public FXMLDocumentController()
     {
@@ -105,6 +103,7 @@ public class FXMLDocumentController implements Initializable
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
         tblPlaylist.setItems(model.getAllPlaylists());
+        listPlaylistSong.setItems(model.getAllSongsByPlaylistId());
     }
 
     @FXML
@@ -178,8 +177,6 @@ public class FXMLDocumentController implements Initializable
 
         //Fethes controller from patient view
         NewEditPlaylistViewController newEditController = loader.getController();
-        
-        
 
         // sets new stage as modal window
         Stage stageNewEditPlaylist = new Stage();
@@ -189,8 +186,7 @@ public class FXMLDocumentController implements Initializable
         stageNewEditPlaylist.setResizable(false);
 
         stageNewEditPlaylist.show();
-        
-        
+
     }
 
     @FXML
@@ -201,6 +197,7 @@ public class FXMLDocumentController implements Initializable
     }
 
     @FXML
+
 
     private void handleSongEdit(ActionEvent event)
     {
@@ -217,6 +214,36 @@ public class FXMLDocumentController implements Initializable
             
     
 
+    private void handleShowPlaylistSongs(MouseEvent event)
+    {
+        Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
+        int playlistId = playlist.getId();
+
+        model.showPlaylistSongs(playlistId);
+
+    }
+
+    @FXML
+    private void handleAddSongToPlaylist(ActionEvent event)
+    {
+        Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
+        Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
+
+        model.addSongToPlaylist(songToAdd, playlistToAddTo);
+    }
+
+    @FXML
+    private void handleSongsOnPlaylistPlay(MouseEvent event)
+    {
+        Song song = listPlaylistSong.getSelectionModel().getSelectedItem();
+
+        if (event.getClickCount() == 2 && song != null)
+        {
+            model.playSong(song);
+        }
+    }
+
+    @FXML
     private void handleSearch3(KeyEvent event)
     {
         String query = txtFieldSearch.getText().trim();

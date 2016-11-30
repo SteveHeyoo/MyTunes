@@ -125,6 +125,13 @@ public class Song
         
         return minutesAndSeconds; 
     }
+
+    @Override
+    public String toString()
+    {
+        return artist + " - " + title;
+    }
+    
     /**
      * Returns the artist and the title in one string
      * @return 

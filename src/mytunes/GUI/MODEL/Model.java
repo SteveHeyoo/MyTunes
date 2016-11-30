@@ -27,7 +27,7 @@ public class Model
 
     private static Model INSTANCE;
     private MusicManager mMgr;
-    private ObservableList songs, playlists;
+    private ObservableList songs, playlists, songsByPlaylistId;
     private MyTunesPlayer mTPlayer;
 
     private Model()
@@ -35,10 +35,10 @@ public class Model
         mMgr = new MusicManager();
         songs = FXCollections.observableArrayList();
         playlists = FXCollections.observableArrayList();
+        songsByPlaylistId = FXCollections.observableArrayList();
         loadSongsAndPlaylists();
-        
-        //mMgr.addSong(new Song(0, artist, title, filePath, 0));
 
+        //mMgr.addSong(new Song(0, artist, title, filePath, 0));
     }
 
     public static Model getInstance()
@@ -108,7 +108,6 @@ public class Model
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     public void createNewPlaylist(String playlistName) throws IOException
     {
@@ -120,18 +119,51 @@ public class Model
     {
         return playlists;
     }
-    
+
+    public ObservableList<Song> getAllSongsByPlaylistId()
+    {
+        return songsByPlaylistId;
+    }
+
     public void deletPlaylist(Playlist playlist)
     {
         try
         {
             mMgr.deletePlaylist(playlist.getId());
             playlists.remove(playlist);
-        }
-        catch(IOException ex)
+        } catch (IOException ex)
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void showPlaylistSongs(int playlistId)
+    {
+        try
+        {
+            songsByPlaylistId.clear();
+            songsByPlaylistId.addAll(mMgr.getSongsByPlaylistId(playlistId));
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+    public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo)
+    {
+        try
+        {
+            //  songsByPlaylistId.add(songToAdd);
+            
+            mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
+            showPlaylistSongs(playlistToAddTo.getId());
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
     
 
