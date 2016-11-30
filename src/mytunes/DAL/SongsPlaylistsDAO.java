@@ -32,10 +32,10 @@ public class SongsPlaylistsDAO
     private static final int WRITE_SIZE = ID_SIZE + DURATION_SIZE + (NAME_SIZE * 2) + FILEPATH_SIZE;
     private static final String FILE_PATH_SONGS = "Songs.dat";
     private static final String FILE_PATH_PLAYLISTS = "Playlists.dat";
+    private static final int WRITE_SIZE_PLAYLIST = ID_SIZE + NAME_SIZE;
 
     public SongsPlaylistsDAO()
     {
-
     }
 
     public Song addSong(File file) throws IOException, UnsupportedAudioFileException
@@ -192,6 +192,26 @@ public class SongsPlaylistsDAO
         }
     }
 
+    public void removePlayListById(int id) throws IOException
+    {
+        try (RandomAccessFile raf = new RandomAccessFile(new File("Playlists.dat"), "rw"))
+        {
+            for (int i = ID_SIZE; i < raf.length(); i += WRITE_SIZE_PLAYLIST)
+            {
+                raf.seek(i);
+                int readId = raf.readInt();
+                if (readId == id)
+                {
+                    raf.seek(i);
+                    byte[] overWriteBytes = new byte[WRITE_SIZE_PLAYLIST];
+                    raf.write(overWriteBytes);
+                    return;
+                }
+
+            }
+        }
+    }
+
     public Playlist createNewPlaylist(String playlistName) throws IOException
     {
         int playlistId;
@@ -209,7 +229,7 @@ public class SongsPlaylistsDAO
             raf.seek(raf.length());
             raf.writeInt(playlistId);
             raf.writeBytes(String.format("%-" + NAME_SIZE + "s", playlistName).substring(0, NAME_SIZE));
-            
+
         }
         return new Playlist(playlistId, playlistName);
 

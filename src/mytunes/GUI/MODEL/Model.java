@@ -107,7 +107,7 @@ public class Model
         }
     }
 
-    public void createNewPlaylist(String playlistName)
+    public void createNewPlaylist(String playlistName) throws IOException
     {
         Playlist playlistToAdd = mMgr.createNewPlaylist(playlistName);
         playlists.add(playlistToAdd);
