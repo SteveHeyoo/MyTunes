@@ -22,7 +22,7 @@ import mytunes.BE.Song;
  *
  * @author Stefan-VpcEB3J1E
  */
-public class SongDAO
+public class SongsPlaylistsDAO
 {
 
     private static final int ID_SIZE = Integer.BYTES;
@@ -30,13 +30,12 @@ public class SongDAO
     private static final int NAME_SIZE = 50;
     private static final int FILEPATH_SIZE = 200;
     private static final int WRITE_SIZE = ID_SIZE + DURATION_SIZE + (NAME_SIZE * 2) + FILEPATH_SIZE;
-
+    private static final String FILE_PATH_SONGS = "Songs.dat";
+    private static final String FILE_PATH_PLAYLISTS = "Playlists.dat";
     private static final int WRITE_SIZE_PLAYLIST = ID_SIZE + NAME_SIZE;
-    private final String fileName;
 
-    public SongDAO(String fileName)
+    public SongsPlaylistsDAO()
     {
-        this.fileName = fileName;
     }
 
     public Song addSong(File file) throws IOException, UnsupportedAudioFileException
@@ -58,9 +57,9 @@ public class SongDAO
             artist = new String(artistByte).trim();
 
         }
-        try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_SONGS), "rw"))
         {
-            
+
             if (raf.length() == 0)
             {
                 raf.writeInt(1);
@@ -71,22 +70,24 @@ public class SongDAO
             raf.writeInt(nextId + 1); //+1 on our nextid in our header
             raf.seek(raf.length());  // place the file pointer at the end of the file.
             raf.writeInt(nextId); // id for song
-            duration = getDuration(file); 
+            duration = getDuration(file);
             raf.writeDouble(duration);    //writes the duration on the song
             raf.writeBytes(String.format("%-" + NAME_SIZE + "s", artist).substring(0, NAME_SIZE)); //Writes artist
             raf.writeBytes(String.format("%-" + NAME_SIZE + "s", title).substring(0, NAME_SIZE)); // Writes Title
             raf.writeBytes(String.format("%-" + FILEPATH_SIZE + "s", filePath).substring(0, FILEPATH_SIZE)); //write file_path
         }
-        
+
         return (new Song(nextId, artist, title, filePath, duration));
     }
-    
+
     /**
-     * Method that calculates the duration of a song and returns the duration as a double
+     * Method that calculates the duration of a song and returns the duration as
+     * a double
+     *
      * @param file
      * @return the duration of a song as a double
      * @throws IOException
-     * @throws UnsupportedAudioFileException 
+     * @throws UnsupportedAudioFileException
      */
     private double getDuration(File file) throws IOException, UnsupportedAudioFileException
     {
@@ -103,56 +104,63 @@ public class SongDAO
 //            int sec = (mili / 1000) % 60;
 //            int min = (mili / 1000) / 60;
     }
-    
+
     /**
      * Reads all the songs in the Songs.dat file and returns the songs as a list
+     *
      * @return List of all songs
-     * @throws IOException 
+     * @throws IOException
      */
     public List<Song> getAllSongs() throws IOException
-    {   
-        try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
+    {
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_SONGS), "rw"))
         {
             List<Song> songList = new ArrayList<>();
 
-            while (raf.getFilePointer()< raf.length())
+            while (raf.getFilePointer() < raf.length())
             {
                 Song songToadd = getOneSong(raf);
                 if (songToadd.getId() != 0)
                 {
-                songList.add(songToadd);
+                    songList.add(songToadd);
                 }
             }
-            
+
             return songList;
+
         }         
-    }
+
+        }
+
+    
+
     /**
-     * Reads the Songs.dat file where the filePointer currently is and returns a Song with the read attributes.
-     * Used in getAllSongs method
+     * Reads the Songs.dat file where the filePointer currently is and returns a
+     * Song with the read attributes. Used in getAllSongs method
+     *
      * @param raf
      * @return Song
-     * @throws IOException 
+     * @throws IOException
      */
     private Song getOneSong(final RandomAccessFile raf) throws IOException
     {
         byte[] nameBytes = new byte[NAME_SIZE];
         byte[] pathBytes = new byte[FILEPATH_SIZE];
-        
+
         if (raf.getFilePointer() == 0)
         {
             raf.seek(ID_SIZE);
         }
         int id = raf.readInt();
-        
-        double duration = raf.readDouble(); 
-        
+
+        double duration = raf.readDouble();
+
         raf.read(nameBytes);
         String artist = new String(nameBytes).trim();
-        
+
         raf.read(nameBytes);
         String title = new String(nameBytes).trim();
-        
+
         raf.read(pathBytes);
         String filePath = new String(pathBytes).trim();
 
@@ -176,7 +184,7 @@ public class SongDAO
             return playlistList;
         }         
     } 
-    /*
+    
     private Playlist getOnePlaylist(final RandomAccessFile raf) throws IOException
     {
         byte[] nameBytes = new byte[NAME_SIZE];
@@ -185,32 +193,26 @@ public class SongDAO
         {
             raf.seek(ID_SIZE);
         }
-        int id = raf.readInt();
-        
-        double duration = raf.readDouble(); 
+        int id = raf.readInt(); 
         
         raf.read(nameBytes);
-        String artist = new String(nameBytes).trim();
-        
-        raf.read(nameBytes);
-        String title = new String(nameBytes).trim();
-        
-        raf.read(pathBytes);
-        String filePath = new String(pathBytes).trim();
+        String playListName = new String(nameBytes).trim();
 
-        return new Song(id, artist, title , filePath, duration);   
-    }*/
+        return new Playlist(id, playListName);   
+    }
     
-    
+
     /**
-     * Removes the song with the given id in our Songs.dat file by overwriting all the data with zeros
+     * Removes the song with the given id in our Songs.dat file by overwriting
+     * all the data with zeros
+     *
      * @param id
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
     public void removeSongById(int id) throws FileNotFoundException, IOException
     {
-        try (RandomAccessFile raf = new RandomAccessFile(new File(fileName), "rw"))
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_SONGS), "rw"))
         {
             for (int i = ID_SIZE; i < raf.length(); i += WRITE_SIZE)
             {
@@ -222,15 +224,19 @@ public class SongDAO
                     byte[] overWriteBytes = new byte[WRITE_SIZE];
                     raf.write(overWriteBytes);
                     return;
-                }               
+                }
+
             }
         }
     }
+
     /**
      * Removes one playlist by id
      * @param id
      * @throws IOException 
      */
+
+
     public void removePlayListById(int id) throws IOException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File("Playlists.dat"), "rw"))
@@ -245,8 +251,32 @@ public class SongDAO
                     byte[] overWriteBytes = new byte[WRITE_SIZE_PLAYLIST];
                     raf.write(overWriteBytes);
                     return;
-                }               
+                }
+
             }
         }
+    }
+
+    public Playlist createNewPlaylist(String playlistName) throws IOException
+    {
+        int playlistId;
+
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_PLAYLISTS), "rw"))
+        {
+            if (raf.length() == 0)
+            {
+                raf.writeInt(1);
+                raf.seek(0);
+            }
+            playlistId = raf.readInt();
+            raf.seek(0);
+            raf.writeInt(playlistId + 1);
+            raf.seek(raf.length());
+            raf.writeInt(playlistId);
+            raf.writeBytes(String.format("%-" + NAME_SIZE + "s", playlistName).substring(0, NAME_SIZE));
+
+        }
+        return new Playlist(playlistId, playlistName);
+
     }
 }

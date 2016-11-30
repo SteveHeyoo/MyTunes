@@ -6,9 +6,7 @@
 package mytunes.BE;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -56,6 +54,11 @@ public class Playlist
     public void setSongsRelations(List<Integer> songsRelations)
     {
         this.songsRelations = songsRelations;
+    }
+    
+    public int getId()
+    {
+        return id;
     }
    
     

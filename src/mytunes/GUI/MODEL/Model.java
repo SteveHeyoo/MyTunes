@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 import mytunes.BLL.MusicManager;
 import mytunes.BLL.MyTunesPlayer;
@@ -25,13 +26,14 @@ public class Model
 
     private static Model INSTANCE;
     private MusicManager mMgr;
-    private ObservableList songs;
+    private ObservableList songs, playlists;
     private MyTunesPlayer mTPlayer;
 
     private Model()
     {
         mMgr = new MusicManager();
         songs = FXCollections.observableArrayList();
+        playlists = FXCollections.observableArrayList();
         loadSongs();
         //mMgr.addSong(new Song(0, artist, title, filePath, 0));
 
@@ -94,7 +96,7 @@ public class Model
 
     public void deleteSong(Song song)
     {
-        
+
         try
         {
             mMgr.deleteSong(song.getId());
@@ -103,6 +105,12 @@ public class Model
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void createNewPlaylist(String playlistName) throws IOException
+    {
+        Playlist playlistToAdd = mMgr.createNewPlaylist(playlistName);
+        playlists.add(playlistToAdd);
     }
 
 }

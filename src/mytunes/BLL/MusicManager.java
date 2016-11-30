@@ -9,8 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import mytunes.BE.Playlist;
 import mytunes.BE.Song;
-import mytunes.DAL.SongDAO;
+import mytunes.DAL.SongsPlaylistsDAO;
 
 /**
  *
@@ -21,21 +22,21 @@ public class MusicManager
 
     private static final String FILE_NAME = "Songs.dat";
 
-    private SongDAO songDAO;
+    private SongsPlaylistsDAO sPlDAO;
 
     public MusicManager()
     {
-        songDAO = new SongDAO(FILE_NAME);
+        sPlDAO = new SongsPlaylistsDAO();
     }
 
     public Song addSong(File file) throws IOException, UnsupportedAudioFileException
     {
-        return songDAO.addSong(file);
+        return sPlDAO.addSong(file);
     }
 
     public List<Song> getAllSongs() throws IOException
     {
-        return songDAO.getAllSongs();
+        return sPlDAO.getAllSongs();
     }
     
     /**
@@ -45,6 +46,11 @@ public class MusicManager
      */
     public void deleteSong(int id) throws IOException
     {
-        songDAO.removeSongById(id);
+        sPlDAO.removeSongById(id);
+    }
+
+    public Playlist createNewPlaylist(String playlistName) throws IOException
+    {
+        return sPlDAO.createNewPlaylist(playlistName);
     }
 }
