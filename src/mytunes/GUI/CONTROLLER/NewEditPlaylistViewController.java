@@ -47,6 +47,7 @@ public class NewEditPlaylistViewController implements Initializable
     {
         String playlistName = lblNameNewEditPlaylist.getText().trim();
         model.createNewPlaylist(playlistName);
+        
 
     }
 

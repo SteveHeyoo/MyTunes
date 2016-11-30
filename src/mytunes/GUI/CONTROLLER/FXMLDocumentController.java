@@ -87,9 +87,11 @@ public class FXMLDocumentController implements Initializable
         columnTitle.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getTitle()));
         columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
         columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDurationInMinutes()));
+        columnPlaylistName.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getName()));
 
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
+        tblPlaylist.setItems(model.getAllPlaylists());
     }
 
     @FXML
@@ -169,6 +171,8 @@ public class FXMLDocumentController implements Initializable
 
         //Fethes controller from patient view
         NewEditPlaylistViewController newEditController = loader.getController();
+        
+        
 
         // sets new stage as modal window
         Stage stageNewEditPlaylist = new Stage();
@@ -178,6 +182,8 @@ public class FXMLDocumentController implements Initializable
         stageNewEditPlaylist.setResizable(false);
 
         stageNewEditPlaylist.show();
+        
+        
     }
 
 }

@@ -113,4 +113,9 @@ public class Model
         playlists.add(playlistToAdd);
     }
 
+    public ObservableList<Playlist> getAllPlaylists()
+    {
+        return playlists;
+    }
+
 }
