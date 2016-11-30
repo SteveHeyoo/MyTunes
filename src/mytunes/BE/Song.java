@@ -111,7 +111,17 @@ public class Song
         int sec = (mili / 1000) % 60;
         int min = (mili / 1000) / 60;
         
-        String minutesAndSeconds ="" + min + ":" + sec;
+        String secString;
+        if (sec < 10)
+        {
+            secString = "0" +sec;
+        }
+        else
+        {
+           secString = "" + sec; 
+        }
+        String minString = "" + min;
+        String minutesAndSeconds =minString + ":" + secString;
         
         return minutesAndSeconds; 
     }
