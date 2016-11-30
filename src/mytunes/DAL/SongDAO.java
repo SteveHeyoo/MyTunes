@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 
 /**
@@ -124,8 +125,7 @@ public class SongDAO
             }
             
             return songList;
-        }
-                
+        }         
     }
     /**
      * Reads the Songs.dat file where the filePointer currently is and returns a Song with the read attributes.
@@ -155,11 +155,52 @@ public class SongDAO
         
         raf.read(pathBytes);
         String filePath = new String(pathBytes).trim();
-        
-        
 
         return new Song(id, artist, title , filePath, duration);   
     }
+    
+    public List<Playlist> getAllPlayLists() throws IOException
+    {   
+        try (RandomAccessFile raf = new RandomAccessFile(new File("Playlist.dat"), "rw"))
+        {
+            List<Playlist> playlistList = new ArrayList<>();
+
+            while (raf.getFilePointer()< raf.length())
+            {
+                Playlist playlistToadd = getOnePlaylist(raf);
+                if (playlistToadd.getId() != 0)
+                {
+                    playlistList.add(playlistToadd);
+                }
+            }
+            return playlistList;
+        }         
+    } 
+    /*
+    private Playlist getOnePlaylist(final RandomAccessFile raf) throws IOException
+    {
+        byte[] nameBytes = new byte[NAME_SIZE];
+        
+        if (raf.getFilePointer() == 0)
+        {
+            raf.seek(ID_SIZE);
+        }
+        int id = raf.readInt();
+        
+        double duration = raf.readDouble(); 
+        
+        raf.read(nameBytes);
+        String artist = new String(nameBytes).trim();
+        
+        raf.read(nameBytes);
+        String title = new String(nameBytes).trim();
+        
+        raf.read(pathBytes);
+        String filePath = new String(pathBytes).trim();
+
+        return new Song(id, artist, title , filePath, duration);   
+    }*/
+    
     
     /**
      * Removes the song with the given id in our Songs.dat file by overwriting all the data with zeros
@@ -185,7 +226,11 @@ public class SongDAO
             }
         }
     }
-    
+    /**
+     * Removes one playlist by id
+     * @param id
+     * @throws IOException 
+     */
     public void removePlayListById(int id) throws IOException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File("Playlists.dat"), "rw"))
