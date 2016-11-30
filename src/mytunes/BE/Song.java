@@ -115,4 +115,11 @@ public class Song
         
         return minutesAndSeconds; 
     }
+
+    @Override
+    public String toString()
+    {
+        return artist + " - " + title;
+    }
+    
 }

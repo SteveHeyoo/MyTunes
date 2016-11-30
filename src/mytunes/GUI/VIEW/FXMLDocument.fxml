@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -11,11 +8,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="658.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="658.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
     <children>
         <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
       <Label layoutX="21.0" layoutY="189.0" text="Playlists" />
-      <TableView fx:id="tblPlaylist" layoutX="21.0" layoutY="222.0" prefHeight="378.0" prefWidth="252.0">
+      <TableView fx:id="tblPlaylist" layoutX="21.0" layoutY="222.0" onMouseClicked="#handleShowPlaylistSongs" prefHeight="378.0" prefWidth="252.0">
         <columns>
           <TableColumn fx:id="columnPlaylistName" prefWidth="75.0" text="Name" />
           <TableColumn fx:id="columnPlaylistNumberOfSongs" prefWidth="75.0" text="Songs" />
@@ -26,8 +23,8 @@
       <Button fx:id="btnPlaySong" layoutX="106.0" layoutY="71.0" mnemonicParsing="false" text="Play" />
       <Button fx:id="btnNextSong" layoutX="163.0" layoutY="71.0" mnemonicParsing="false" text="Next" />
       <Label fx:id="lblSongPlaylist" layoutX="325.0" layoutY="189.0" text="Songs on Playlist" />
-      <ListView fx:id="listPlaylistSong" layoutX="325.0" layoutY="222.0" prefHeight="378.0" prefWidth="200.0" />
-      <Button fx:id="addSongToPlaylist" layoutX="553.0" layoutY="222.0" mnemonicParsing="false" text="&lt;-" />
+      <ListView fx:id="listPlaylistSong" layoutX="325.0" layoutY="222.0" onMouseClicked="#handleSongsOnPlaylistPlay" prefHeight="378.0" prefWidth="200.0" />
+      <Button layoutX="553.0" layoutY="222.0" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" text="&lt;-" />
       <TableView fx:id="tblSong" layoutX="626.0" layoutY="222.0" onMouseClicked="#handleTblViewMouseClick" prefHeight="378.0" prefWidth="390.0">
         <columns>
           <TableColumn fx:id="columnTitle" prefWidth="75.0" text="Title" />
