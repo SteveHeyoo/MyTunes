@@ -267,6 +267,10 @@ public class Model
             Collections.swap(songsByPlaylistId, indexId - 1, indexId);
 
         }
+        else
+        {
+            indexId += 1;
+        }
         return indexId;
 
     }
@@ -274,10 +278,14 @@ public class Model
     public int moveSongDown(Song songToMoveDown)
     {
         int indexId = songsByPlaylistId.indexOf(songToMoveDown);
-        if (indexId != songsByPlaylistId.size())
+        if (indexId  != songsByPlaylistId.size()-1)
         {
             Collections.swap(songsByPlaylistId, indexId + 1, indexId);
 
+        }
+        else
+        {
+            indexId -= 1;
         }
         return indexId;
     }

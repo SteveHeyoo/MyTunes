@@ -273,7 +273,7 @@ public class FXMLDocumentController implements Initializable
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown) + 1);
         }
     }
-
+    @FXML
     private void handlePlayButton(ActionEvent event)
     {
         //model.playSong(currentSong);
