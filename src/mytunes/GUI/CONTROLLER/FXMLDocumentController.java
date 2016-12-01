@@ -5,6 +5,7 @@
  */
 package mytunes.GUI.CONTROLLER;
 
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -98,7 +99,7 @@ public class FXMLDocumentController implements Initializable
         columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
         columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDurationInMinutes()));
         columnPlaylistName.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getName()));
-
+        
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
         tblPlaylist.setItems(model.getAllPlaylists());
@@ -254,7 +255,7 @@ public class FXMLDocumentController implements Initializable
 
         if (songToMoveUp != null)
         {
-            listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongUp(songToMoveUp)-1);
+            listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongUp(songToMoveUp) - 1);
 
         }
 
@@ -264,10 +265,10 @@ public class FXMLDocumentController implements Initializable
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
-        
+
         if (songToMoveDown != null)
         {
-            listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown)+1);
+            listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown) + 1);
         }
     }
 
