@@ -31,6 +31,8 @@ public class Model
     private MusicManager mMgr;
     private ObservableList songs, playlists, songsByPlaylistId;
     private MyTunesPlayer mTPlayer;
+    private int lastSongId;
+    
 
     private Model()
     {
@@ -88,15 +90,84 @@ public class Model
 
     public void playSong(Song song)
     {
+        
         if (mTPlayer == null)
         {
+            
             mTPlayer = new MyTunesPlayer(song.getFilePath());
             mTPlayer.getMediaPlayer().setAutoPlay(true);
         }
-        mTPlayer.getMediaPlayer().stop();
-        mTPlayer = new MyTunesPlayer(song.getFilePath());
-        mTPlayer.getMediaPlayer().setAutoPlay(true);
-
+        else
+        {
+            mTPlayer.getMediaPlayer().stop();
+            mTPlayer = new MyTunesPlayer(song.getFilePath());
+            mTPlayer.getMediaPlayer().setAutoPlay(true);            
+        }        
+        
+    }
+    
+    public void playSongButtonClick(Song song)
+    {
+//        if (mTPlayer == null)
+//        {           
+//            mTPlayer = new MyTunesPlayer(song.getFilePath());            
+//        }
+//        else
+//        {  
+//        }
+        int id = song.getId();
+        
+        if(mTPlayer != null)
+        {
+            
+            if(lastSongId == id)
+            {
+                //it is the same song as the last. the song should pause/play
+                if(mTPlayer.isPaused())
+                {
+                    //resume
+                    mTPlayer.getMediaPlayer().play();
+                    mTPlayer.setPause(false);
+            
+                }
+                else
+                {
+                    //pause
+                    if(mTPlayer.getMediaPlayer().getCurrentTime().toMillis() < mTPlayer.getMediaPlayer().getCycleDuration().toMillis())
+                    {
+                        //mTPlayer.getMediaPlayer().setAutoPlay(false);
+                        mTPlayer.getMediaPlayer().pause();
+                        mTPlayer.setPause(true);
+                        //Pause song            
+                    }
+                    else
+                    {
+                        mTPlayer = new MyTunesPlayer(song.getFilePath());
+                        mTPlayer.getMediaPlayer().setAutoPlay(true); 
+                    }
+                }
+            }
+            else
+            {
+                //it is a new song. play the song
+                mTPlayer.getMediaPlayer().stop();
+                mTPlayer = new MyTunesPlayer(song.getFilePath());
+                mTPlayer.getMediaPlayer().setAutoPlay(true); 
+            }          
+        }
+        else
+        {   
+                mTPlayer = new MyTunesPlayer(song.getFilePath());
+                mTPlayer.getMediaPlayer().setAutoPlay(true);         
+                //no song playing
+        }
+        
+        lastSongId = song.getId();
+        //System.out.println(mTPlayer.getMediaPlayer().getCurrentTime());
+        //System.out.println("Donezo");
+        
+    //Thread.sleep((long)mTPlayer.getMediaPlayer().getCycleDuration().toMillis());
+        //mTPlayer.getMediaPlayer().setAutoPlay(true);
     }
 
     public void deleteSong(Song song)

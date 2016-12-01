@@ -81,6 +81,8 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private Button btnNextSong;
 
+    private Song currentSong;
+    
     public FXMLDocumentController()
     {
         model = Model.getInstance();
@@ -148,11 +150,11 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleTblViewMouseClick(MouseEvent event)
     {
-        Song song = tblSong.getSelectionModel().getSelectedItem();
+        currentSong = tblSong.getSelectionModel().getSelectedItem();
 
-        if (event.getClickCount() == 2 && song != null)
+        if (event.getClickCount() == 2 && currentSong != null)
         {
-            model.playSong(song);
+            model.playSong(currentSong);
         }
     }
 
@@ -230,11 +232,11 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
     {
-        Song song = listPlaylistSong.getSelectionModel().getSelectedItem();
+        currentSong = listPlaylistSong.getSelectionModel().getSelectedItem();
 
-        if (event.getClickCount() == 2 && song != null)
+        if (event.getClickCount() == 2 && currentSong != null)
         {
-            model.playSong(song);
+            model.playSong(currentSong);
         }
     }
 
@@ -271,5 +273,15 @@ public class FXMLDocumentController implements Initializable
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown) + 1);
         }
     }
+
+    private void handlePlayButton(ActionEvent event)
+    {
+        //model.playSong(currentSong);
+        
+        model.playSongButtonClick(currentSong);
+        //btnPlaySong.setText("Pause");
+    }
+
+
 
 }
