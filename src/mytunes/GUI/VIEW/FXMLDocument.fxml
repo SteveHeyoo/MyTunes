@@ -39,8 +39,8 @@
       <Button layoutX="97.0" layoutY="613.0" mnemonicParsing="false" text="Edit" />
       <Button layoutX="163.0" layoutY="613.0" mnemonicParsing="false" onAction="#handleDeletePlayList" text="Delete" />
       <Button layoutX="460.0" layoutY="607.0" mnemonicParsing="false" text="Delete" />
-      <Button layoutX="325.0" layoutY="607.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="56.0" text="^" />
-      <Button layoutX="397.0" layoutY="607.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="50.0" text="v" />
+      <Button layoutX="325.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleMoveSongUp" prefHeight="31.0" prefWidth="56.0" text="^" />
+      <Button layoutX="397.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleMoveSongDown" prefHeight="31.0" prefWidth="50.0" text="v" />
       <Button layoutX="793.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleTblViewSongsDelete" text="Delete" />
       <Button layoutX="709.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleSongEdit" text="Edit" />
       <Button layoutX="626.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleNewSong" text="New" />

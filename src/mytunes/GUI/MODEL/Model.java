@@ -7,6 +7,8 @@ package mytunes.GUI.MODEL;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -130,9 +132,9 @@ public class Model
         try
         {
             mMgr.deletePlaylist(playlist.getId());
-            
+
             playlists.remove(playlist);
-            
+
         } catch (IOException ex)
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -151,23 +153,20 @@ public class Model
         }
     }
 
-
     public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo)
     {
         try
         {
             //  songsByPlaylistId.add(songToAdd);
-            
+
             mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
             showPlaylistSongs(playlistToAddTo.getId());
         } catch (IOException ex)
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }
-    
 
     public List<Song> filterSongs(String query)
     {
@@ -175,20 +174,41 @@ public class Model
         try
         {
             songList = mMgr.search(query);
-            
-        }
-        catch(IOException ex)
+
+        } catch (IOException ex)
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
         return songList;
     }
-    
+
     public void setSongs(List<Song> songList)
     {
         songs.clear();
         songs.addAll(songList);
     }
-    
+
+    public int moveSongUp(Song songToMoveUp)
+    {
+        int indexId = songsByPlaylistId.indexOf(songToMoveUp);
+        if (indexId != 0)
+        {
+            Collections.swap(songsByPlaylistId, indexId - 1, indexId);
+
+        }
+        return indexId;
+
+    }
+
+    public int moveSongDown(Song songToMoveDown)
+    {
+        int indexId = songsByPlaylistId.indexOf(songToMoveDown);
+        if (indexId != songsByPlaylistId.size())
+        {
+            Collections.swap(songsByPlaylistId, indexId + 1, indexId);
+
+        }
+        return indexId;
+    }
 
 }

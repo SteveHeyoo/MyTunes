@@ -25,7 +25,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -145,8 +144,6 @@ public class FXMLDocumentController implements Initializable
         stageSongEdit.show();
     }
 
-
-
     @FXML
     private void handleTblViewMouseClick(MouseEvent event)
     {
@@ -198,21 +195,18 @@ public class FXMLDocumentController implements Initializable
 
     @FXML
 
-
     private void handleSongEdit(ActionEvent event)
     {
         Song song = tblSong.getSelectionModel().getSelectedItem();
         try
         {
             loadSongDataView(song);
-        }
-        catch (IOException ex)
+        } catch (IOException ex)
         {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-            
-    
+
     @FXML
     private void handleShowPlaylistSongs(MouseEvent event)
     {
@@ -253,5 +247,28 @@ public class FXMLDocumentController implements Initializable
         model.setSongs(searchResult);
     }
 
+    @FXML
+    private void handleMoveSongUp(ActionEvent event)
+    {
+        Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
+
+        if (songToMoveUp != null)
+        {
+            listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongUp(songToMoveUp)-1);
+
+        }
+
+    }
+
+    @FXML
+    private void handleMoveSongDown(ActionEvent event)
+    {
+        Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
+        
+        if (songToMoveDown != null)
+        {
+            listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown)+1);
+        }
+    }
 
 }
