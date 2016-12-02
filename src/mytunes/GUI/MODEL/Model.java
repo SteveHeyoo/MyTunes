@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -31,8 +33,11 @@ public class Model
     private ObservableList songs, playlists, songsByPlaylistId;
     private MyTunesPlayer mTPlayer;
     private int lastSongId;
+    private boolean runningDelay;
+    private boolean playingSong;
     
-
+    private Timeline timeline;
+    
     private Model()
     {
         mMgr = new MusicManager();
@@ -93,17 +98,16 @@ public class Model
         if (mTPlayer == null)
         {
             
-            mTPlayer = new MyTunesPlayer(song.getFilePath());
-            mTPlayer.getMediaPlayer().setAutoPlay(true);
+            playTheSong(song);
         }
         else
         {
             mTPlayer.getMediaPlayer().stop();
-            mTPlayer = new MyTunesPlayer(song.getFilePath());
-            mTPlayer.getMediaPlayer().setAutoPlay(true);            
-        }        
+            playTheSong(song);
+        }            
         
     }
+
     
     public void playSongButtonClick(Song song)
     {
@@ -114,6 +118,7 @@ public class Model
 //        else
 //        {  
 //        }
+        
         int id = song.getId();
         
         if(mTPlayer != null)
@@ -125,6 +130,7 @@ public class Model
                 if(mTPlayer.isPaused())
                 {
                     //resume
+                    timeline.play();
                     mTPlayer.getMediaPlayer().play();
                     mTPlayer.setPause(false);
             
@@ -135,14 +141,15 @@ public class Model
                     if(mTPlayer.getMediaPlayer().getCurrentTime().toMillis() < mTPlayer.getMediaPlayer().getCycleDuration().toMillis())
                     {
                         //mTPlayer.getMediaPlayer().setAutoPlay(false);
-                        mTPlayer.getMediaPlayer().pause();
+                        //playTheSong(song);
+                        timeline.pause();
+                        mTPlayer.getMediaPlayer().pause();                    
                         mTPlayer.setPause(true);
                         //Pause song            
                     }
                     else
                     {
-                        mTPlayer = new MyTunesPlayer(song.getFilePath());
-                        mTPlayer.getMediaPlayer().setAutoPlay(true); 
+                        playTheSong(song);
                     }
                 }
             }
@@ -150,25 +157,88 @@ public class Model
             {
                 //it is a new song. play the song
                 mTPlayer.getMediaPlayer().stop();
-                mTPlayer = new MyTunesPlayer(song.getFilePath());
-                mTPlayer.getMediaPlayer().setAutoPlay(true); 
+                playTheSong(song);
             }          
         }
         else
         {   
-                mTPlayer = new MyTunesPlayer(song.getFilePath());
-                mTPlayer.getMediaPlayer().setAutoPlay(true);         
-                //no song playing
+                //no song playing, and no song has been played before
+                playTheSong(song);
+                
         }
         
-        lastSongId = song.getId();
+
         //System.out.println(mTPlayer.getMediaPlayer().getCurrentTime());
         //System.out.println("Donezo");
         
     //Thread.sleep((long)mTPlayer.getMediaPlayer().getCycleDuration().toMillis());
         //mTPlayer.getMediaPlayer().setAutoPlay(true);
     }
+    
+    private void playTheSong(Song song)
+    {      
+        if(playingSong != false)
+        {
+            timeline.stop();
+        }
 
+        playingSong = true;
+        mTPlayer = new MyTunesPlayer(song.getFilePath());
+        mTPlayer.getMediaPlayer().setAutoPlay(true);
+        lastSongId = song.getId();
+        startDelay(song); 
+        
+    }
+    
+    private void startDelay(Song song)
+    {
+        timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration()*1000)),ae -> playNextSong(song)));timeline.play();
+        runningDelay = true;
+    }
+    
+        
+    private void playNextSong(Song song)
+    {
+        playingSong = false;
+        playTheSong(getNextSongInCurrentList(song));
+        runningDelay = false;
+    }
+    /**
+     * Returns the next song in the currently active list og songs
+     * @param song
+     * @return the next song
+     */
+    public Song getNextSongInCurrentList(Song song)
+    {
+        List<Song> currentList;
+        Song nextSong;
+        if(songs.contains(song))
+        {
+            currentList = songs;
+        }
+        else if(songsByPlaylistId.contains(song))
+        {
+            currentList = songsByPlaylistId;
+        }
+        else
+        {
+            currentList = null;
+            System.out.println("ERROR no list found");
+        }
+        System.out.println("List: " + currentList);
+        
+        int index = currentList.indexOf(song);
+        if (index != currentList.size()-1)
+        {
+            nextSong = currentList.get(index + 1);
+        }
+        else
+        {
+            nextSong = currentList.get(0);
+        }
+        return nextSong;
+    }
+    
     public void deleteSong(Song song)
     {
         try
