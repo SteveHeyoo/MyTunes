@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mytunes.BE.Playlist;
 import mytunes.GUI.MODEL.Model;
 
 /**
@@ -27,6 +28,8 @@ public class NewEditPlaylistViewController implements Initializable
     private TextField lblNameNewEditPlaylist;
 
     Model model;
+    private boolean PlayListExist;
+    private Playlist playlistToEdit;
 
     public NewEditPlaylistViewController()
     {
@@ -47,17 +50,23 @@ public class NewEditPlaylistViewController implements Initializable
     private void handleSaveNewPlaylist(ActionEvent event) throws IOException
     {
         String playlistName = lblNameNewEditPlaylist.getText().trim();
-        model.createNewPlaylist(playlistName);
-        
+        model.createNewPlaylist(playlistToEdit, playlistName);
+
         Stage getStage = (Stage) lblNameNewEditPlaylist.getScene().getWindow();
         getStage.close();
-        
 
     }
 
     @FXML
     private void handleCancelNewPlaylist(ActionEvent event)
     {
+        Stage getStage = (Stage) lblNameNewEditPlaylist.getScene().getWindow();
+        getStage.close();
     }
 
+    public void setPlaylistToEdit(Playlist playlist)
+    {
+        playlistToEdit = playlist;
+        lblNameNewEditPlaylist.setText(playlist.getName());
+    }
 }

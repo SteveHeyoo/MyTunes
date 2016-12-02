@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -182,10 +181,22 @@ public class Model
         }
     }
 
-    public void createNewPlaylist(String playlistName) throws IOException
+    public void createNewPlaylist(Playlist playlistToEdit, String playlistName) throws IOException
     {
-        Playlist playlistToAdd = mMgr.createNewPlaylist(playlistName);
-        playlists.add(playlistToAdd);
+        if (playlistToEdit == null)
+        {
+            Playlist playlistToAdd = mMgr.createNewPlaylist(playlistName);
+            playlists.add(playlistToAdd);
+            
+        }
+        else
+        {
+            playlistToEdit.setName(playlistName);
+            mMgr.editPlaylistName(playlistToEdit);
+            playlists.clear();
+            playlists.addAll(mMgr.getAllPlayLists());          
+        }
+
     }
 
     public ObservableList<Playlist> getAllPlaylists()

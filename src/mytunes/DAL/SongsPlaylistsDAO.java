@@ -54,31 +54,27 @@ public class SongsPlaylistsDAO
             byte[] tagByte = new byte[3];
             raff.seek(raff.length() - 128);
             raff.read(tagByte);
-            tag= new String(tagByte).trim();
+            tag = new String(tagByte).trim();
             //System.out.println("Tag:" + tag);
             raff.read(titleByte);
-            
+
             if (tag.equals("TAG"))
             {
                 title = new String(titleByte).trim();
-            }
-            else
+            } else
             {
                 title = file.getName();
             }
-            
+
             raff.read(artistByte);
-            
+
             if (tag.equals("TAG"))
             {
                 artist = new String(artistByte).trim();
-            }
-            else
+            } else
             {
                 artist = "";
             }
-                    
-            
 
         }
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_SONGS), "rw"))
@@ -103,7 +99,7 @@ public class SongsPlaylistsDAO
 
         return (new Song(nextId, artist, title, filePath, duration));
     }
-    
+
     /**
      * Method that calculates the duration of a song and returns the duration as
      * a double
@@ -150,7 +146,7 @@ public class SongsPlaylistsDAO
                 }
             }
             return songList;
-        }         
+        }
     }
 
     /**
@@ -183,16 +179,16 @@ public class SongsPlaylistsDAO
         raf.read(pathBytes);
         String filePath = new String(pathBytes).trim();
 
-        return new Song(id, artist, title , filePath, duration);   
+        return new Song(id, artist, title, filePath, duration);
     }
-    
+
     public List<Playlist> getAllPlayLists() throws IOException
-    {   
+    {
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_PLAYLISTS), "rw"))
         {
             List<Playlist> playlistList = new ArrayList<>();
 
-            while (raf.getFilePointer()< raf.length())
+            while (raf.getFilePointer() < raf.length())
             {
                 Playlist playlistToadd = getOnePlaylist(raf);
                 if (playlistToadd.getId() != 0)
@@ -201,25 +197,24 @@ public class SongsPlaylistsDAO
                 }
             }
             return playlistList;
-        }         
-    } 
-    
+        }
+    }
+
     private Playlist getOnePlaylist(final RandomAccessFile raf) throws IOException
     {
         byte[] nameBytes = new byte[NAME_SIZE];
-        
+
         if (raf.getFilePointer() == 0)
         {
             raf.seek(ID_SIZE);
         }
-        int id = raf.readInt(); 
-        
+        int id = raf.readInt();
+
         raf.read(nameBytes);
         String playListName = new String(nameBytes).trim();
 
-        return new Playlist(id, playListName);   
+        return new Playlist(id, playListName);
     }
-    
 
     /**
      * Removes the song with the given id in our Songs.dat file by overwriting
@@ -251,11 +246,10 @@ public class SongsPlaylistsDAO
 
     /**
      * Removes one playlist by id
+     *
      * @param id
-     * @throws IOException 
+     * @throws IOException
      */
-
-
     public void removePlayListById(int id) throws IOException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_PLAYLISTS), "rw"))
@@ -297,5 +291,24 @@ public class SongsPlaylistsDAO
         }
         return new Playlist(playlistId, playlistName);
 
+    }
+
+    public void editPlaylistName(Playlist playlistToEdit) throws IOException
+    {
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_PLAYLISTS), "rw"))
+        {
+            for (int i = ID_SIZE; i < raf.length(); i += WRITE_SIZE_PLAYLIST)
+            {
+                raf.seek(i);
+                int playlistId = raf.readInt();
+
+                if (playlistId == playlistToEdit.getId())
+                {
+                    raf.writeBytes(String.format("%-" + NAME_SIZE + "s", playlistToEdit.getName()).substring(0, NAME_SIZE));
+                }
+
+            }
+
+        }
     }
 }

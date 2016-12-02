@@ -76,7 +76,6 @@ public class MusicManager
         sPlDAO.removePlayListById(id);
     }
 
-
     public List<Song> getSongsByPlaylistId(int playlistId) throws IOException
     {
         List<Song> returnList = new ArrayList<>();
@@ -105,25 +104,29 @@ public class MusicManager
     public void addSongToPlaylist(int songId, int playlistId) throws IOException
     {
         rDAO.addSongToPlaylist(songId, playlistId);
-        
+
     }
 
-    
     public List<Song> search(String query) throws FileNotFoundException, IOException
     {
         List<Song> allWords = getAllSongs();
         List<Song> searchList = new ArrayList<>();
-        
-        for(int i = 0; i< allWords.size(); i++) 
+
+        for (int i = 0; i < allWords.size(); i++)
         {
-            if(allWords.get(i).getAllSongStringInfo().toLowerCase().contains(query.toLowerCase())) 
+            if (allWords.get(i).getAllSongStringInfo().toLowerCase().contains(query.toLowerCase()))
             {
                 searchList.add(allWords.get(i));
             }
         }
-        
+
         return searchList;
     }
-    
 
+    public void editPlaylistName(Playlist playlistToEdit) throws IOException
+    {
+        sPlDAO.editPlaylistName(playlistToEdit);
+    }
+    
+    
 }
