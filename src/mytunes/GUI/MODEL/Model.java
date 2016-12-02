@@ -13,8 +13,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -45,8 +49,8 @@ public class Model
         playlists = FXCollections.observableArrayList();
         songsByPlaylistId = FXCollections.observableArrayList();
         loadSongsAndPlaylists();
-
-        //mMgr.addSong(new Song(0, artist, title, filePath, 0));
+       
+   
     }
 
     public static Model getInstance()
@@ -79,6 +83,8 @@ public class Model
     {
         try
         {
+            playlists.clear(); //STUPID
+            songs.clear(); //STUPID
             playlists.addAll(mMgr.getAllPlayLists());
             songs.addAll(mMgr.getAllSongs());
         } catch (IOException ex)
@@ -298,7 +304,7 @@ public class Model
         try
         {
             songsByPlaylistId.clear();
-            songsByPlaylistId.addAll(mMgr.getSongsByPlaylistId(playlistId));
+            songsByPlaylistId.addAll(mMgr.getSongsByPlaylistId(playlistId));      
         } catch (IOException ex)
         {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -312,6 +318,9 @@ public class Model
             //  songsByPlaylistId.add(songToAdd);
 
             mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
+            playlistToAddTo.setNumberOfSongsInPlaylist(+1);
+            playlists.clear();
+            playlists.addAll(mMgr.getAllPlayLists());
             showPlaylistSongs(playlistToAddTo.getId());
         } catch (IOException ex)
         {

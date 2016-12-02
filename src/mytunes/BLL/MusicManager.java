@@ -62,7 +62,12 @@ public class MusicManager
 
     public List<Playlist> getAllPlayLists() throws IOException
     {
-        return sPlDAO.getAllPlayLists();
+        List<Playlist> playlists = sPlDAO.getAllPlayLists();
+        for (Playlist playlist : playlists)
+        {
+            playlist.setNumberOfSongsInPlaylist(getSongsByPlaylistId(playlist.getId()).size());
+        }
+        return playlists;
     }
 
     /**
@@ -90,6 +95,7 @@ public class MusicManager
 
                 if (readSongId == songId)
                 {
+
                     returnList.add(song);
                 }
 
@@ -127,6 +133,5 @@ public class MusicManager
     {
         sPlDAO.editPlaylistName(playlistToEdit);
     }
-    
-    
+
 }

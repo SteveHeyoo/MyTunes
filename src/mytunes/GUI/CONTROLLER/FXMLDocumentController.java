@@ -42,6 +42,8 @@ import mytunes.GUI.MODEL.Model;
 public class FXMLDocumentController implements Initializable
 {
 
+    private Model model;
+
     @FXML
     private Label lblSong;
     @FXML
@@ -52,7 +54,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Playlist, String> columnPlaylistName;
     @FXML
-    private TableColumn<Playlist, String> columnPlaylistNumberOfSongs;
+    private TableColumn<Playlist, Integer> columnPlaylistNumberOfSongs;
     @FXML
     private TableColumn<Playlist, String> columnPlaylistTotalDuration;
 
@@ -73,7 +75,6 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TextField txtFieldSearch;
 
-    private Model model;
     @FXML
     private Button btnPreviousSong;
     @FXML
@@ -101,7 +102,7 @@ public class FXMLDocumentController implements Initializable
         columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
         columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDurationInMinutes()));
         columnPlaylistName.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getName()));
-
+        columnPlaylistNumberOfSongs.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getNumberOfSongsInPlaylist()));
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
         tblPlaylist.setItems(model.getAllPlaylists());
@@ -197,10 +198,14 @@ public class FXMLDocumentController implements Initializable
     private void handleShowPlaylistSongs(MouseEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
+        int index = tblPlaylist.getSelectionModel().getSelectedIndex();
         int playlistId = playlist.getId();
         if (playlist != null)
         {
             model.showPlaylistSongs(playlistId);
+            
+            
+
         }
         if (event.getClickCount() == 2)
         {
@@ -215,8 +220,10 @@ public class FXMLDocumentController implements Initializable
     {
         Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
         Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
+        int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
 
         model.addSongToPlaylist(songToAdd, playlistToAddTo);
+        tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
     }
 
     @FXML
@@ -305,7 +312,7 @@ public class FXMLDocumentController implements Initializable
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
         showNewEditPlaylistDialog(playlist);
-        
+
     }
 
 }
