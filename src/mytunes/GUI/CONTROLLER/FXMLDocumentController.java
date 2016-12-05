@@ -5,6 +5,7 @@
  */
 package mytunes.GUI.CONTROLLER;
 
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -50,6 +51,8 @@ public class FXMLDocumentController implements Initializable
     private MediaPlayer mp;
     private Media me;
 
+    private Model model;
+
     @FXML
     private Label lblSong;
     @FXML
@@ -60,7 +63,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Playlist, String> columnPlaylistName;
     @FXML
-    private TableColumn<Playlist, String> columnPlaylistNumberOfSongs;
+    private TableColumn<Playlist, Integer> columnPlaylistNumberOfSongs;
     @FXML
     private TableColumn<Playlist, String> columnPlaylistTotalDuration;
 
@@ -81,7 +84,6 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TextField txtFieldSearch;
 
-    private Model model;
     @FXML
     private Button btnPreviousSong;
     @FXML
@@ -91,6 +93,8 @@ public class FXMLDocumentController implements Initializable
     
     @FXML
     private Slider volumeSlider;
+
+    private Song currentSong;
 
     public FXMLDocumentController()
     {
@@ -110,7 +114,7 @@ public class FXMLDocumentController implements Initializable
         columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
         columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDurationInMinutes()));
         columnPlaylistName.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getName()));
-
+        columnPlaylistNumberOfSongs.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getNumberOfSongsInPlaylist()));
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
         tblPlaylist.setItems(model.getAllPlaylists());
@@ -156,16 +160,14 @@ public class FXMLDocumentController implements Initializable
         stageSongEdit.show();
     }
 
-
-
     @FXML
     private void handleTblViewMouseClick(MouseEvent event)
     {
-        Song song = tblSong.getSelectionModel().getSelectedItem();
+        currentSong = tblSong.getSelectionModel().getSelectedItem();
 
-        if (event.getClickCount() == 2 && song != null)
+        if (event.getClickCount() == 2 && currentSong != null)
         {
-            model.playSong(song);
+            model.playSong(currentSong);
         }
     }
 
@@ -179,24 +181,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleNewPlaylist(ActionEvent event) throws IOException
     {
-        // TODO Display the New/Edit gui to enter a name to the new playlist
-        Stage primStage = (Stage) tblSong.getScene().getWindow();
-        //mvc pattern til fxml sti
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mytunes/GUI/VIEW/NewEditPlaylistView.fxml"));
-
-        Parent root = loader.load();
-
-        //Fethes controller from patient view
-        NewEditPlaylistViewController newEditController = loader.getController();
-
-        // sets new stage as modal window
-        Stage stageNewEditPlaylist = new Stage();
-        stageNewEditPlaylist.setScene(new Scene(root));
-        stageNewEditPlaylist.initModality(Modality.WINDOW_MODAL);
-        stageNewEditPlaylist.initOwner(primStage);
-        stageNewEditPlaylist.setResizable(false);
-
-        stageNewEditPlaylist.show();
+        showNewEditPlaylistDialog(null);
 
     }
 
@@ -209,28 +194,36 @@ public class FXMLDocumentController implements Initializable
 
     @FXML
 
-
     private void handleSongEdit(ActionEvent event)
     {
         Song song = tblSong.getSelectionModel().getSelectedItem();
         try
         {
             loadSongDataView(song);
-        }
-        catch (IOException ex)
+        } catch (IOException ex)
         {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-            
-    
+
     @FXML
-    private void handleShowPlaylistSongs(MouseEvent event)
+    private void handleShowPlaylistSongs(MouseEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
+        int index = tblPlaylist.getSelectionModel().getSelectedIndex();
         int playlistId = playlist.getId();
+        if (playlist != null)
+        {
+            model.showPlaylistSongs(playlistId);
+            
+            
 
-        model.showPlaylistSongs(playlistId);
+        }
+        if (event.getClickCount() == 2)
+        {
+            showNewEditPlaylistDialog(playlist);
+
+        }
 
     }
 
@@ -239,18 +232,20 @@ public class FXMLDocumentController implements Initializable
     {
         Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
         Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
+        int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
 
         model.addSongToPlaylist(songToAdd, playlistToAddTo);
+        tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
     }
 
     @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
     {
-        Song song = listPlaylistSong.getSelectionModel().getSelectedItem();
+        currentSong = listPlaylistSong.getSelectionModel().getSelectedItem();
 
-        if (event.getClickCount() == 2 && song != null)
+        if (event.getClickCount() == 2 && currentSong != null)
         {
-            model.playSong(song);
+            model.playSong(currentSong);
         }
     }
 
@@ -258,11 +253,12 @@ public class FXMLDocumentController implements Initializable
     private void handleSearch3(KeyEvent event)
     {
         String query = txtFieldSearch.getText().trim();
-        
+
         List<Song> searchResult = null;
         searchResult = model.filterSongs(query);
         model.setSongs(searchResult);
     }
+
     
     @FXML
     private void handleVolume(DragEvent event)
@@ -283,5 +279,73 @@ public class FXMLDocumentController implements Initializable
     
     
 
+
+    @FXML
+    private void handleMoveSongUp(ActionEvent event)
+    {
+        Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
+
+        if (songToMoveUp != null)
+        {
+            listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongUp(songToMoveUp) - 1);
+
+        }
+
+    }
+
+    @FXML
+    private void handleMoveSongDown(ActionEvent event)
+    {
+        Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
+
+        if (songToMoveDown != null)
+        {
+            listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown) + 1);
+        }
+    }
+
+    @FXML
+    private void handlePlayButton(ActionEvent event)
+    {
+        //model.playSong(currentSong);
+
+        model.playSongButtonClick(currentSong);
+        //btnPlaySong.setText("Pause");
+    }
+
+    private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
+    {
+        // TODO Display the New/Edit gui to enter a name to the new playlist
+        Stage primStage = (Stage) tblSong.getScene().getWindow();
+        //mvc pattern til fxml sti
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mytunes/GUI/VIEW/NewEditPlaylistView.fxml"));
+
+        Parent root = loader.load();
+
+        //Fethes controller from patient view
+        NewEditPlaylistViewController newEditController = loader.getController();
+        if (playlist != null)
+        {
+            newEditController.setPlaylistToEdit(playlist);
+
+        }
+
+        // sets new stage as modal window
+        Stage stageNewEditPlaylist = new Stage();
+        stageNewEditPlaylist.setScene(new Scene(root));
+        stageNewEditPlaylist.initModality(Modality.WINDOW_MODAL);
+        stageNewEditPlaylist.initOwner(primStage);
+        stageNewEditPlaylist.setResizable(false);
+
+        stageNewEditPlaylist.show();
+    }
+
+    @FXML
+    private void handleEditPlaylist(ActionEvent event) throws IOException
+    {
+        Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
+        showNewEditPlaylistDialog(playlist);
+
+    }
 
 }

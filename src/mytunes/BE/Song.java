@@ -99,7 +99,7 @@ public class Song
     {
         return duration;
     }
-    /**
+    /*
      * Takes the duration of the song (Seconds) and transforms it to (Minutes:Seconds)
      * @return String. example: "3:20"
      */
