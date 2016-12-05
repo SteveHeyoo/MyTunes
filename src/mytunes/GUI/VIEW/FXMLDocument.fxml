@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -8,7 +11,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="658.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="658.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
     <children>
         <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
       <Label layoutX="21.0" layoutY="189.0" text="Playlists" />
@@ -47,5 +50,7 @@
       <TextField fx:id="txtFieldSearch" layoutX="825.0" layoutY="32.0" onKeyReleased="#handleSearch3" />
       <Button layoutX="1016.0" layoutY="32.0" mnemonicParsing="false" text="Search" />
       <Label layoutX="785.0" layoutY="37.0" text="Filter:" />
+      <Slider fx:id="volumeSlide" layoutX="226.0" layoutY="78.0" />
+      <Label layoutX="226.0" layoutY="53.0" text="Volume" />
     </children>
 </AnchorPane>

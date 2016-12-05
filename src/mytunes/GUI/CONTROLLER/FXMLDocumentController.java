@@ -9,9 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,12 +24,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -41,6 +46,9 @@ import mytunes.GUI.MODEL.Model;
  */
 public class FXMLDocumentController implements Initializable
 {
+    @FXML
+    private MediaPlayer mp;
+    private Media me;
 
     @FXML
     private Label lblSong;
@@ -80,6 +88,9 @@ public class FXMLDocumentController implements Initializable
     private Button btnPlaySong;
     @FXML
     private Button btnNextSong;
+    
+    @FXML
+    private Slider volumeSlider;
 
     public FXMLDocumentController()
     {
@@ -251,6 +262,23 @@ public class FXMLDocumentController implements Initializable
         List<Song> searchResult = null;
         searchResult = model.filterSongs(query);
         model.setSongs(searchResult);
+    }
+    
+    @FXML
+    private void handleVolume(DragEvent event)
+    {
+//        mTPlayer.getMediaPlayer.
+//        
+//        
+//        volumeSlider.setValue(mp.getVolume() * 100);
+//        volumeSlider.valueProperty().addListener(new InvalidationListener()
+//        {
+//                @Override
+//                public void invalidated(Observable observable)
+//                {
+//                mp.setVolume(volumeSlider.getValue() / 100);
+//                }  
+//        });
     }
     
     
