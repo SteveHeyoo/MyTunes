@@ -5,7 +5,6 @@
  */
 package mytunes.GUI.CONTROLLER;
 
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +21,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
@@ -49,6 +50,7 @@ import mytunes.GUI.MODEL.Model;
  */
 public class FXMLDocumentController implements Initializable
 {
+
     private Media me;
 
     private Model model;
@@ -134,8 +136,16 @@ public class FXMLDocumentController implements Initializable
 
         if (file != null)
         {
-            // to do
-            model.createNewSong(file);
+            try
+            {
+                model.createNewSong(file);
+            } catch (IOException iOEx)
+            {
+                showAlert("IOException", iOEx.getMessage());
+            } catch (UnsupportedAudioFileException ex)
+            {
+                showAlert("UnsupportedAudioFileException", ex.getMessage());
+            }
         }
     }
 
@@ -181,7 +191,13 @@ public class FXMLDocumentController implements Initializable
     private void handleTblViewSongsDelete(ActionEvent event)
     {
         Song song = tblSong.getSelectionModel().getSelectedItem();
-        model.deleteSong(song);
+        try
+        {
+            model.deleteSong(song);
+        } catch (IOException ex)
+        {
+            showAlert("IOException", ex.getMessage());
+        }
     }
 
     @FXML
@@ -195,7 +211,13 @@ public class FXMLDocumentController implements Initializable
     private void handleDeletePlayList(ActionEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
-        model.deletPlaylist(playlist);
+        try
+        {
+            model.deletPlaylist(playlist);
+        } catch (IOException ex)
+        {
+            showAlert("IOException", ex.getMessage());
+        }
     }
 
     @FXML
@@ -213,7 +235,7 @@ public class FXMLDocumentController implements Initializable
     }
 
     @FXML
-    private void handleShowPlaylistSongs(MouseEvent event) throws IOException
+    private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
         int index = tblPlaylist.getSelectionModel().getSelectedIndex();
@@ -223,24 +245,26 @@ public class FXMLDocumentController implements Initializable
             try
             {
                 model.showPlaylistSongs(playlistId);
+
+            } catch (IOException ex)
+            {
+                showAlert("IOException", ex.getMessage());
             } catch (UnsupportedAudioFileException ex)
             {
-                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                showAlert("UnsupportedAudioFileException", ex.getMessage());
             }
-            try
-            {
-                model.showPlaylistSongs(playlistId);
-            } catch (UnsupportedAudioFileException ex)
-            {
-                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
 
         }
+
         if (event.getClickCount() == 2)
         {
-            showNewEditPlaylistDialog(playlist);
+            try
+            {
+                showNewEditPlaylistDialog(playlist);
+            } catch (IOException ex)
+            {
+                showAlert("IOException", ex.getMessage());
+            }
 
         }
 
@@ -249,22 +273,23 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleAddSongToPlaylist(ActionEvent event)
     {
-        
+        Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
+        Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
+        int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
 
         try
         {
-            Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
-            Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
-            int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
-            
+
             model.addSongToPlaylist(songToAdd, playlistToAddTo);
-            tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
-        } 
-        catch (UnsupportedAudioFileException ex)
+        } catch (IOException ex)
         {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            showAlert("IOException", ex.getMessage());
+        } catch (UnsupportedAudioFileException ex)
+        {
+            showAlert("UnsupportedAudioFileException", ex.getMessage());
         }
-        
+        tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
+
     }
 
     @FXML
@@ -287,10 +312,17 @@ public class FXMLDocumentController implements Initializable
         String query = txtFieldSearch.getText().trim();
 
         List<Song> searchResult = null;
-        searchResult = model.filterSongs(query);
+        try
+        {
+            searchResult = model.filterSongs(query);
+        } catch (IOException ex)
+        {
+            showAlert("IOException", ex.getMessage());
+        }
         model.setSongs(searchResult);
     }
 
+    @FXML
     private void handleMoveSongUp(ActionEvent event)
     {
         Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -301,7 +333,8 @@ public class FXMLDocumentController implements Initializable
 
         }
     }
-
+    
+    @FXML
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -322,7 +355,7 @@ public class FXMLDocumentController implements Initializable
         
         //btnPlaySong.setText("Pause");
     }
-    
+
     private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
     {
         // TODO Display the New/Edit gui to enter a name to the new playlist
@@ -349,12 +382,23 @@ public class FXMLDocumentController implements Initializable
 
         stageNewEditPlaylist.show();
     }
-
+    
+    @FXML
     private void handleEditPlaylist(ActionEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
         showNewEditPlaylistDialog(playlist);
 
+    }
+
+    public static void showAlert(String header, String body)
+    {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText(header);
+        alert.setContentText(body);
+
+        alert.showAndWait();
     }
 
     @FXML
