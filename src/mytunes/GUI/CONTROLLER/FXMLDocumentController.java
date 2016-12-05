@@ -31,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 import mytunes.GUI.MODEL.Model;
@@ -200,7 +201,13 @@ public class FXMLDocumentController implements Initializable
         int playlistId = playlist.getId();
         if (playlist != null)
         {
-            model.showPlaylistSongs(playlistId);
+            try
+            {
+                model.showPlaylistSongs(playlistId);
+            } catch (UnsupportedAudioFileException ex)
+            {
+                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (event.getClickCount() == 2)
         {
@@ -216,7 +223,14 @@ public class FXMLDocumentController implements Initializable
         Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
         Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
 
-        model.addSongToPlaylist(songToAdd, playlistToAddTo);
+        try
+        {
+            model.addSongToPlaylist(songToAdd, playlistToAddTo);
+        } 
+        catch (UnsupportedAudioFileException ex)
+        {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -250,7 +264,6 @@ public class FXMLDocumentController implements Initializable
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongUp(songToMoveUp) - 1);
 
         }
-
     }
 
     @FXML

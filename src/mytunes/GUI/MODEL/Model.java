@@ -15,6 +15,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -37,6 +38,8 @@ public class Model
     private boolean playingSong;
     
     private Timeline timeline;
+    private int index;
+    private List<Song> currentList;
     
     private Model()
     {
@@ -186,6 +189,7 @@ public class Model
         mTPlayer = new MyTunesPlayer(song.getFilePath());
         mTPlayer.getMediaPlayer().setAutoPlay(true);
         lastSongId = song.getId();
+        //index = currentList.indexOf(song);
         startDelay(song); 
         
     }
@@ -210,31 +214,38 @@ public class Model
      */
     public Song getNextSongInCurrentList(Song song)
     {
-        List<Song> currentList;
+        
         Song nextSong;
         if(songs.contains(song))
         {
             currentList = songs;
+            //System.out.println("List: all list");
         }
         else if(songsByPlaylistId.contains(song))
         {
             currentList = songsByPlaylistId;
+            ///System.out.println("List: playlist list");
         }
         else
         {
             currentList = null;
             System.out.println("ERROR no list found");
         }
-        System.out.println("List: " + currentList);
+        
         
         int index = currentList.indexOf(song);
+
         if (index != currentList.size()-1)
         {
+            System.out.println("next sonng is: " + index + 1);
             nextSong = currentList.get(index + 1);
+            index++;
         }
         else
         {
+            System.out.println("nexxxt song is: " + currentList.get(0).getAllSongStringInfo());
             nextSong = currentList.get(0);
+            index = 0;
         }
         return nextSong;
     }
@@ -293,7 +304,7 @@ public class Model
         }
     }
 
-    public void showPlaylistSongs(int playlistId)
+    public void showPlaylistSongs(int playlistId) throws UnsupportedAudioFileException
     {
         try
         {
@@ -305,7 +316,7 @@ public class Model
         }
     }
 
-    public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo)
+    public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo) throws UnsupportedAudioFileException
     {
         try
         {

@@ -76,7 +76,7 @@ public class MusicManager
         sPlDAO.removePlayListById(id);
     }
 
-    public List<Song> getSongsByPlaylistId(int playlistId) throws IOException
+    public List<Song> getSongsByPlaylistId(int playlistId) throws IOException, UnsupportedAudioFileException
     {
         List<Song> returnList = new ArrayList<>();
         List<Song> allSongs = sPlDAO.getAllSongs();
@@ -90,7 +90,36 @@ public class MusicManager
 
                 if (readSongId == songId)
                 {
-                    returnList.add(song);
+                    
+                    if (returnList.contains(song))
+                    {
+                        Song newSong;
+                        String filePath = song.getFilePath();
+                        File file = new File(filePath);
+                        //newSong = sPlDAO.addSong(file);
+                        //returnList.add(newSong);
+                        //System.out.println(song.getAllSongStringInfo());
+                        returnList.add(song); 
+                    }
+                    else
+                    {
+                       returnList.add(song); 
+                    }   
+                    
+                    /*
+                    for (Song songInReturnList : returnList)
+                    {
+                        if (returnList.size() != 0)
+                        {
+                            if (returnList.contains(song))
+                            {
+                                //System.out.println(songInReturnList.getAllSongStringInfo());
+                            }
+                        }
+                        //duplicate.
+                    }*/
+                    
+                    
                 }
 
             }
