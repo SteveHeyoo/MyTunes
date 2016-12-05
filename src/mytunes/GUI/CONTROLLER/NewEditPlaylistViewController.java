@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mytunes.BE.Playlist;
@@ -26,6 +27,8 @@ public class NewEditPlaylistViewController implements Initializable
 
     @FXML
     private TextField lblNameNewEditPlaylist;
+    @FXML
+    private Button btnCancelPlaylistEdit;
 
     Model model;
     private boolean PlayListExist;
@@ -60,8 +63,13 @@ public class NewEditPlaylistViewController implements Initializable
     @FXML
     private void handleCancelNewPlaylist(ActionEvent event)
     {
+
+        Stage stage = (Stage) btnCancelPlaylistEdit.getScene().getWindow();
+        stage.close();
+
         Stage getStage = (Stage) lblNameNewEditPlaylist.getScene().getWindow();
         getStage.close();
+
     }
 
     public void setPlaylistToEdit(Playlist playlist)

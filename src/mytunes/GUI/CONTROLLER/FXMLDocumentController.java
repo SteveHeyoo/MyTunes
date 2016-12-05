@@ -10,9 +10,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,11 +25,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,6 +48,9 @@ import mytunes.GUI.MODEL.Model;
  */
 public class FXMLDocumentController implements Initializable
 {
+    private Media me;
+
+    private Model model;
 
     @FXML
     private Label lblSong;
@@ -53,7 +62,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Playlist, String> columnPlaylistName;
     @FXML
-    private TableColumn<Playlist, String> columnPlaylistNumberOfSongs;
+    private TableColumn<Playlist, Integer> columnPlaylistNumberOfSongs;
     @FXML
     private TableColumn<Playlist, String> columnPlaylistTotalDuration;
 
@@ -74,15 +83,19 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TextField txtFieldSearch;
 
-    private Model model;
     @FXML
     private Button btnPreviousSong;
     @FXML
     private Button btnPlaySong;
     @FXML
     private Button btnNextSong;
+    
 
     private Song currentSong;
+    @FXML
+    private Slider volumeSlide;
+    @FXML
+    private Label lblVolume;
 
     public FXMLDocumentController()
     {
@@ -102,7 +115,7 @@ public class FXMLDocumentController implements Initializable
         columnArtist.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getArtist()));
         columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDurationInMinutes()));
         columnPlaylistName.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getName()));
-
+        columnPlaylistNumberOfSongs.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getNumberOfSongsInPlaylist()));
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
         tblPlaylist.setItems(model.getAllPlaylists());
@@ -198,6 +211,7 @@ public class FXMLDocumentController implements Initializable
     private void handleShowPlaylistSongs(MouseEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
+        int index = tblPlaylist.getSelectionModel().getSelectedIndex();
         int playlistId = playlist.getId();
         if (playlist != null)
         {
@@ -208,6 +222,16 @@ public class FXMLDocumentController implements Initializable
             {
                 Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            try
+            {
+                model.showPlaylistSongs(playlistId);
+            } catch (UnsupportedAudioFileException ex)
+            {
+                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+
         }
         if (event.getClickCount() == 2)
         {
@@ -220,17 +244,22 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleAddSongToPlaylist(ActionEvent event)
     {
-        Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
-        Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
+        
 
         try
         {
+            Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
+            Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
+            int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
+            
             model.addSongToPlaylist(songToAdd, playlistToAddTo);
+            tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
         } 
         catch (UnsupportedAudioFileException ex)
         {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     @FXML
@@ -254,7 +283,11 @@ public class FXMLDocumentController implements Initializable
         model.setSongs(searchResult);
     }
 
-    @FXML
+    
+    
+    
+
+
     private void handleMoveSongUp(ActionEvent event)
     {
         Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -266,7 +299,6 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
-    @FXML
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -285,7 +317,7 @@ public class FXMLDocumentController implements Initializable
         model.playSongButtonClick(currentSong);
         //btnPlaySong.setText("Pause");
     }
-
+    
     private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
     {
         // TODO Display the New/Edit gui to enter a name to the new playlist
@@ -313,12 +345,16 @@ public class FXMLDocumentController implements Initializable
         stageNewEditPlaylist.show();
     }
 
-    @FXML
     private void handleEditPlaylist(ActionEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
         showNewEditPlaylistDialog(playlist);
-        
+
+    }
+
+    @FXML
+    private void handleVolume(MouseEvent event)
+    {
     }
 
 }
