@@ -22,9 +22,9 @@
             <TableColumn fx:id="columnPlaylistTotalDuration" prefWidth="75.0" text="Time" />
         </columns>
       </TableView>
-      <Button fx:id="btnPreviousSong" layoutX="21.0" layoutY="71.0" mnemonicParsing="false" text="Previous" />
+      <Button fx:id="btnPreviousSong" layoutX="21.0" layoutY="71.0" mnemonicParsing="false" onAction="#handlePlayPreviousSong" text="Previous" />
       <Button fx:id="btnPlaySong" layoutX="106.0" layoutY="71.0" mnemonicParsing="false" onAction="#handlePlayButton" text="Play" />
-      <Button fx:id="btnNextSong" layoutX="163.0" layoutY="71.0" mnemonicParsing="false" text="Next" />
+      <Button fx:id="btnNextSong" layoutX="163.0" layoutY="71.0" mnemonicParsing="false" onAction="#handlePlayNextSong" text="Next" />
       <Label fx:id="lblSongPlaylist" layoutX="325.0" layoutY="189.0" text="Songs on Playlist" />
       <ListView fx:id="listPlaylistSong" layoutX="325.0" layoutY="222.0" onMouseClicked="#handleSongsOnPlaylistPlay" prefHeight="378.0" prefWidth="200.0" />
       <Button layoutX="553.0" layoutY="222.0" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" text="&lt;-" />

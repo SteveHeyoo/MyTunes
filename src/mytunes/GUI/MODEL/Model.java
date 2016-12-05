@@ -18,6 +18,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Control;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
@@ -40,9 +43,10 @@ public class Model
     private boolean runningDelay;
     private boolean playingSong;
     
+    private Song songPlaying;
     private Timeline timeline;
-    private int index;
     private List<Song> currentList;
+    private Control currentListControl;
     
     private Model()
     {
@@ -55,6 +59,11 @@ public class Model
    
     }
 
+    public void setCurrentListControl(Control currentListControl)
+    {
+        this.currentListControl = currentListControl; 
+    }
+    
     public static Model getInstance()
     {
         if (INSTANCE == null)
@@ -107,20 +116,36 @@ public class Model
     {
         
         if (mTPlayer == null)
-        {
-            
+        {            
             playTheSong(song);
         }
         else
         {
             mTPlayer.getMediaPlayer().stop();
             playTheSong(song);
+            /*
+            Song songToPlay;
+            try
+            {
+                ListView<Song> playlist = (ListView)currentListControl;
+                songToPlay = playlist.getSelectionModel().getSelectedItem();
+            
+            }
+            catch(ClassCastException c)
+            {
+                TableView<Song> playlist = (TableView)currentListControl;
+                songToPlay = playlist.getSelectionModel().getSelectedItem();
+           
+            }   
+            playTheSong(songToPlay);
+            */
+        
         }            
         
     }
 
     
-    public void playSongButtonClick(Song song)
+    public void playSongButtonClick()
     {
 //        if (mTPlayer == null)
 //        {           
@@ -129,8 +154,22 @@ public class Model
 //        else
 //        {  
 //        }
+        Song songToPlay;
+            try
+            {
+                ListView<Song> playlist = (ListView)currentListControl;
+                songToPlay = playlist.getSelectionModel().getSelectedItem();
+            
+            }
+            catch(ClassCastException c)
+            {
+                TableView<Song> playlist = (TableView)currentListControl;
+                songToPlay = playlist.getSelectionModel().getSelectedItem();
+           
+            }   
         
-        int id = song.getId();
+        
+        int id = songToPlay.getId();
         
         if(mTPlayer != null)
         {
@@ -160,7 +199,7 @@ public class Model
                     }
                     else
                     {
-                        playTheSong(song);
+                        playTheSong(songToPlay);
                     }
                 }
             }
@@ -168,13 +207,13 @@ public class Model
             {
                 //it is a new song. play the song
                 mTPlayer.getMediaPlayer().stop();
-                playTheSong(song);
+                playTheSong(songToPlay);
             }          
         }
         else
         {   
                 //no song playing, and no song has been played before
-                playTheSong(song);
+                playTheSong(songToPlay);
                 
         }
         
@@ -188,11 +227,11 @@ public class Model
     
     private void playTheSong(Song song)
     {      
-        if(playingSong != false)
+        if(playingSong == true)
         {
             timeline.stop();
         }
-
+        songPlaying = song;
         playingSong = true;
         mTPlayer = new MyTunesPlayer(song.getFilePath());
         mTPlayer.getMediaPlayer().setAutoPlay(true);
@@ -204,16 +243,58 @@ public class Model
     
     private void startDelay(Song song)
     {
-        timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration()*1000)),ae -> playNextSong(song)));timeline.play();
+        timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration()*1000)),ae -> playNextSong()));timeline.play();
         runningDelay = true;
     }
     
+    public Song getSongPlaying()
+    {
+        return songPlaying;
+    }
         
-    private void playNextSong(Song song)
+    public void pressNextButton()
+    {
+        
+        //mTPlayer.setPause(false);
+        System.out.println("next button pressed");
+        if (mTPlayer == null)
+        {
+            //mTPlayer.getMediaPlayer().stop();
+            System.out.println("ululul");
+            timeline.stop();
+
+            playNextSong();
+        }
+        else
+        {
+            mTPlayer.getMediaPlayer().stop();
+            
+            System.out.println("SSSD");
+            timeline.stop();
+            
+            playNextSong();           
+        }       
+    }
+    
+    private void playNextSong()
     {
         playingSong = false;
-        playTheSong(getNextSongInCurrentList(song));
-        runningDelay = false;
+        Song nextSong = getNextSongInCurrentList(songPlaying);
+        try
+        {
+            ListView<Song> playlist = (ListView)currentListControl;
+            playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
+            
+        }
+        catch(ClassCastException c)
+        {
+            TableView<Song> playlist = (TableView)currentListControl;
+            playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
+        }
+        playTheSong(nextSong);
+        //runningDelay = false;
+              
+              
     }
     /**
      * Returns the next song in the currently active list og songs
