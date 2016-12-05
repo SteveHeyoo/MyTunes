@@ -8,12 +8,16 @@ package mytunes.GUI.CONTROLLER;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mytunes.BE.Playlist;
+import static mytunes.GUI.CONTROLLER.FXMLDocumentController.showAlert;
 import mytunes.GUI.MODEL.Model;
 
 /**
@@ -47,10 +51,16 @@ public class NewEditPlaylistViewController implements Initializable
     }
 
     @FXML
-    private void handleSaveNewPlaylist(ActionEvent event) throws IOException
+    private void handleSaveNewPlaylist(ActionEvent event)
     {
         String playlistName = lblNameNewEditPlaylist.getText().trim();
-        model.createNewPlaylist(playlistToEdit, playlistName);
+        try
+        {
+            model.createNewPlaylist(playlistToEdit, playlistName);
+        } catch (IOException ex)
+        {
+            showAlert("IOException", ex.getMessage());
+        }
 
         Stage getStage = (Stage) lblNameNewEditPlaylist.getScene().getWindow();
         getStage.close();

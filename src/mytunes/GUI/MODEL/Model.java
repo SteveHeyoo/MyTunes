@@ -62,20 +62,11 @@ public class Model
         return INSTANCE;
     }
 
-    public void createNewSong(File file)
+    public void createNewSong(File file) throws IOException, UnsupportedAudioFileException
     {
         Song song;
-        try
-        {
-            song = mMgr.addSong(file);
-            songs.add(song);
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedAudioFileException ex)
-        {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        song = mMgr.addSong(file);
+        songs.add(song);
 
     }
 
@@ -83,13 +74,13 @@ public class Model
     {
         try
         {
-            playlists.clear(); //STUPID
-            songs.clear(); //STUPID
+            playlists.clear();
+            songs.clear();
             playlists.addAll(mMgr.getAllPlayLists());
             songs.addAll(mMgr.getAllSongs());
         } catch (IOException ex)
         {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -245,16 +236,11 @@ public class Model
         return nextSong;
     }
     
-    public void deleteSong(Song song)
+    public void deleteSong(Song song) throws IOException
     {
-        try
-        {
+
             mMgr.deleteSong(song.getId());
             songs.remove(song);
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public void createNewPlaylist(Playlist playlistToEdit, String playlistName) throws IOException
@@ -285,36 +271,23 @@ public class Model
         return songsByPlaylistId;
     }
 
-    public void deletPlaylist(Playlist playlist)
+    public void deletPlaylist(Playlist playlist) throws IOException
     {
-        try
-        {
             mMgr.deletePlaylist(playlist.getId());
 
             playlists.remove(playlist);
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
-    public void showPlaylistSongs(int playlistId)
+    public void showPlaylistSongs(int playlistId) throws IOException
     {
-        try
-        {
             songsByPlaylistId.clear();
             songsByPlaylistId.addAll(mMgr.getSongsByPlaylistId(playlistId));      
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
-    public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo)
+    public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo) throws IOException
     {
-        try
-        {
+
             //  songsByPlaylistId.add(songToAdd);
 
             mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
@@ -322,24 +295,16 @@ public class Model
             playlists.clear();
             playlists.addAll(mMgr.getAllPlayLists());
             showPlaylistSongs(playlistToAddTo.getId());
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
     }
 
-    public List<Song> filterSongs(String query)
+    public List<Song> filterSongs(String query) throws IOException
     {
         List<Song> songList = null;
-        try
-        {
+
             songList = mMgr.search(query);
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         return songList;
     }
 
@@ -378,6 +343,23 @@ public class Model
             indexId -= 1;
         }
         return indexId;
+    }
+
+    public void editSong(Song songToEdit, File fileSong) throws IOException, UnsupportedAudioFileException
+    {
+        Song songSong = (Song) songs.get(songs.indexOf(songToEdit));
+        songSong.setArtist(songToEdit.getArtist());
+        songSong.setTitle(songToEdit.getTitle());
+        if (fileSong != null)
+        {
+            songSong.setFilePath(fileSong.getAbsolutePath());
+        }
+        
+            mMgr.saveEditedSong(songSong);
+            songs.clear();
+            songs.addAll(mMgr.getAllSongs());
+
+        
     }
 
 }

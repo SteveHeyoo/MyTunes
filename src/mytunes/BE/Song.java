@@ -15,8 +15,8 @@ public class Song
     private final int id;
     private String artist;
     private String title;
-    private final String filePath;
-    private final double duration;
+    private String filePath;
+    private double duration;
 
 
 
@@ -139,5 +139,15 @@ public class Song
     public String getAllSongStringInfo()
     {
         return artist + " " + title;
+    }
+
+    public void setFilePath(String filePath)
+    {
+        this.filePath = filePath;
+    }
+
+    public void setDuration(double duration)
+    {
+        this.duration = duration;
     }
 }

@@ -5,16 +5,23 @@
  */
 package mytunes.GUI.CONTROLLER;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Song;
+import static mytunes.GUI.CONTROLLER.FXMLDocumentController.showAlert;
+import mytunes.GUI.MODEL.Model;
 
 /**
  *
@@ -22,6 +29,7 @@ import mytunes.BE.Song;
  */
 public class SongEditController implements Initializable
 {
+
     @FXML
     private TextField txtTitle;
     @FXML
@@ -32,50 +40,69 @@ public class SongEditController implements Initializable
     private TextField txtTime;
     @FXML
     private TextField txtFile;
-    
+
     private Song currentSong;
-    @FXML
-    private Label lblSongInfo;
-    @FXML
-    private Label lblTitle;
-    @FXML
-    private Label lblArtist;
-    @FXML
-    private Label lblCategory;
-    @FXML
-    private Button btnCancel;
-    @FXML
-    private Button btnSave;
-    @FXML
-    private Label lblTime;
-    @FXML
-    private Label lblFile;
-    @FXML
-    private Button btnChoose;
-    
+    private File file;
+
+    private Model model;
+
     public void initialize(URL url, ResourceBundle rb)
     {
-    
+        model = Model.getInstance();
     }
-    
+
     public void setSong(Song song)
     {
         currentSong = song;
         fillTextField();
     }
-    
+
     private void fillTextField()
     {
         txtTitle.setText(currentSong.getTitle());
         txtArtist.setText(currentSong.getArtist());
-        txtTime.setText(currentSong.getDuration()+"");
+        txtTime.setText(currentSong.getDurationInMinutes());
         txtFile.setText(currentSong.getFilePath());
-        
+
     }
 
     @FXML
     private void handleSaveSong(ActionEvent event)
     {
+        currentSong.setArtist(txtArtist.getText());
+        currentSong.setTitle(txtTitle.getText());
+        try
+        {
+            model.editSong(currentSong, file);
+        } catch (IOException ex)
+        {
+           showAlert("IOException", ex.getMessage());
+        } catch (UnsupportedAudioFileException ex)
+        {
+            showAlert("IOException", ex.getMessage());
+        }
+        Stage getStage = (Stage) txtFile.getScene().getWindow();
+        getStage.close();
+
     }
-    
+
+    @FXML
+    private void handleBtnCancel(ActionEvent event)
+    {
+        Stage getStage = (Stage) txtFile.getScene().getWindow();
+        getStage.close();
+    }
+
+    @FXML
+    private void handleBtnChoose(ActionEvent event)
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialFileName(currentSong.getFilePath());
+        FileChooser.ExtensionFilter mp3Filter = new FileChooser.ExtensionFilter("MP3 Files(*.mp3)", "*.mp3");
+        fileChooser.getExtensionFilters().add(mp3Filter);
+
+        file = fileChooser.showOpenDialog(null);
+
+    }
+
 }

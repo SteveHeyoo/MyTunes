@@ -134,4 +134,10 @@ public class MusicManager
         sPlDAO.editPlaylistName(playlistToEdit);
     }
 
+
+    public void saveEditedSong(Song songSong) throws IOException, UnsupportedAudioFileException
+    {
+        sPlDAO.editSong(songSong);
+    }
+
 }
