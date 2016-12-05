@@ -6,19 +6,24 @@
 package mytunes.GUI.CONTROLLER;
 
 import java.io.File;
+
 import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import javafx.stage.Stage;
+
 import mytunes.BE.Song;
 import static mytunes.GUI.CONTROLLER.FXMLDocumentController.showAlert;
 import mytunes.GUI.MODEL.Model;
@@ -42,6 +47,7 @@ public class SongEditController implements Initializable
     private TextField txtFile;
 
     private Song currentSong;
+
     private File file;
 
     private Model model;
@@ -69,6 +75,7 @@ public class SongEditController implements Initializable
     @FXML
     private void handleSaveSong(ActionEvent event)
     {
+
         currentSong.setArtist(txtArtist.getText());
         currentSong.setTitle(txtTitle.getText());
         try
@@ -76,7 +83,7 @@ public class SongEditController implements Initializable
             model.editSong(currentSong, file);
         } catch (IOException ex)
         {
-           showAlert("IOException", ex.getMessage());
+            showAlert("IOException", ex.getMessage());
         } catch (UnsupportedAudioFileException ex)
         {
             showAlert("IOException", ex.getMessage());

@@ -13,9 +13,13 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.Alert;
+
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import static mytunes.GUI.CONTROLLER.FXMLDocumentController.showAlert;
 import mytunes.GUI.MODEL.Model;
@@ -30,9 +34,10 @@ public class NewEditPlaylistViewController implements Initializable
 
     @FXML
     private TextField lblNameNewEditPlaylist;
+    @FXML
+    private Button btnCancelPlaylistEdit;
 
-    Model model;
-    private boolean PlayListExist;
+    private Model model;
     private Playlist playlistToEdit;
 
     public NewEditPlaylistViewController()
@@ -60,6 +65,9 @@ public class NewEditPlaylistViewController implements Initializable
         } catch (IOException ex)
         {
             showAlert("IOException", ex.getMessage());
+        } catch (UnsupportedAudioFileException ex)
+        {
+            showAlert("UnsupportedAudioFileException", ex.getMessage());
         }
 
         Stage getStage = (Stage) lblNameNewEditPlaylist.getScene().getWindow();
@@ -70,8 +78,10 @@ public class NewEditPlaylistViewController implements Initializable
     @FXML
     private void handleCancelNewPlaylist(ActionEvent event)
     {
+
         Stage getStage = (Stage) lblNameNewEditPlaylist.getScene().getWindow();
         getStage.close();
+
     }
 
     public void setPlaylistToEdit(Playlist playlist)

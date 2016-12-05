@@ -41,6 +41,8 @@ public class Model
     private boolean playingSong;
     
     private Timeline timeline;
+    private int index;
+    private List<Song> currentList;
     
     private Model()
     {
@@ -78,9 +80,13 @@ public class Model
             songs.clear();
             playlists.addAll(mMgr.getAllPlayLists());
             songs.addAll(mMgr.getAllSongs());
-        } catch (IOException ex)
+        } 
+        catch (IOException ex)
         {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        } catch (UnsupportedAudioFileException ex)
+        {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -183,6 +189,7 @@ public class Model
         mTPlayer = new MyTunesPlayer(song.getFilePath());
         mTPlayer.getMediaPlayer().setAutoPlay(true);
         lastSongId = song.getId();
+        //index = currentList.indexOf(song);
         startDelay(song); 
         
     }
@@ -207,31 +214,38 @@ public class Model
      */
     public Song getNextSongInCurrentList(Song song)
     {
-        List<Song> currentList;
+        
         Song nextSong;
         if(songs.contains(song))
         {
             currentList = songs;
+            //System.out.println("List: all list");
         }
         else if(songsByPlaylistId.contains(song))
         {
             currentList = songsByPlaylistId;
+            ///System.out.println("List: playlist list");
         }
         else
         {
             currentList = null;
             System.out.println("ERROR no list found");
         }
-        System.out.println("List: " + currentList);
+        
         
         int index = currentList.indexOf(song);
+
         if (index != currentList.size()-1)
         {
+            System.out.println("next sonng is: " + index + 1);
             nextSong = currentList.get(index + 1);
+            index++;
         }
         else
         {
+            System.out.println("nexxxt song is: " + currentList.get(0).getAllSongStringInfo());
             nextSong = currentList.get(0);
+            index = 0;
         }
         return nextSong;
     }
@@ -243,7 +257,7 @@ public class Model
             songs.remove(song);
     }
 
-    public void createNewPlaylist(Playlist playlistToEdit, String playlistName) throws IOException
+    public void createNewPlaylist(Playlist playlistToEdit, String playlistName) throws IOException, UnsupportedAudioFileException
     {
         if (playlistToEdit == null)
         {
@@ -253,10 +267,12 @@ public class Model
         }
         else
         {
-            playlistToEdit.setName(playlistName);
-            mMgr.editPlaylistName(playlistToEdit);
-            playlists.clear();
-            playlists.addAll(mMgr.getAllPlayLists());          
+          
+                playlistToEdit.setName(playlistName);
+                mMgr.editPlaylistName(playlistToEdit);          
+                playlists.clear();
+                playlists.addAll(mMgr.getAllPlayLists());
+
         }
 
     }
@@ -279,13 +295,16 @@ public class Model
 
     }
 
-    public void showPlaylistSongs(int playlistId) throws IOException
+    public void showPlaylistSongs(int playlistId) throws UnsupportedAudioFileException, IOException
+
     {
             songsByPlaylistId.clear();
             songsByPlaylistId.addAll(mMgr.getSongsByPlaylistId(playlistId));      
     }
 
-    public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo) throws IOException
+
+    public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo) throws UnsupportedAudioFileException, IOException
+
     {
 
             //  songsByPlaylistId.add(songToAdd);
