@@ -110,8 +110,9 @@ public class FXMLDocumentController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        dataBind();
         volumeSlide.setValue(100);
+        dataBind();
+        
     }
     
     private void dataBind()
@@ -133,15 +134,10 @@ public class FXMLDocumentController implements Initializable
             @Override
             public void invalidated(javafx.beans.Observable observable)
             {
-                if (model.getmTPlayer() == null)
+                if (model.getmTPlayer() != null)
                 {
-                    System.out.println("null");
-                }
-                else
-                {
-                model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() /100);
-                }
-                
+                    model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() /100);
+                }  
             }
         });
     }
@@ -203,6 +199,7 @@ public class FXMLDocumentController implements Initializable
         {
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
+            model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue()/100);
             
         }
     }
@@ -321,6 +318,7 @@ public class FXMLDocumentController implements Initializable
             model.setIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
+            model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue()/100);
             
             
             //currentControlList = listPlaylistSong;
@@ -373,6 +371,7 @@ public class FXMLDocumentController implements Initializable
         model.setIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
         model.setCurrentListControl(currentControlList);
         model.playSongButtonClick();
+        model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue()/100);
 
         //btnPlaySong.setText("Pause");
     }
@@ -431,6 +430,7 @@ public class FXMLDocumentController implements Initializable
     {
         
         model.pressNextButton();
+        model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue()/100);
         
     }
     
@@ -438,6 +438,7 @@ public class FXMLDocumentController implements Initializable
     private void handlePlayPreviousSong(ActionEvent event)
     {
         model.pressPreviousButton();
+        model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue()/100);
     }
 
     @FXML
