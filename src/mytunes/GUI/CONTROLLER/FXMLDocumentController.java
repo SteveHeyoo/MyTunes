@@ -117,6 +117,7 @@ public class FXMLDocumentController implements Initializable
         columnTime.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getDurationInMinutes()));
         columnPlaylistName.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getName()));
         columnPlaylistNumberOfSongs.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getNumberOfSongsInPlaylist()));
+        columnPlaylistTotalDuration.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getPlaylistDuration()));
         //I bind the table to a list of data (Empty at startup):
         tblSong.setItems(model.getAllSongs());
         tblPlaylist.setItems(model.getAllPlaylists());
@@ -208,6 +209,7 @@ public class FXMLDocumentController implements Initializable
         try
         {
             model.deletPlaylist(playlist);
+
         } catch (IOException ex)
         {
             showAlert("IOException", ex.getMessage());
@@ -286,7 +288,6 @@ public class FXMLDocumentController implements Initializable
 
     }
 
-    @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
     {
         currentSong = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -312,6 +313,7 @@ public class FXMLDocumentController implements Initializable
         }
         model.setSongs(searchResult);
     }
+
     private void handleMoveSongUp(ActionEvent event)
     {
         Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -322,6 +324,7 @@ public class FXMLDocumentController implements Initializable
 
         }
     }
+
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -367,6 +370,7 @@ public class FXMLDocumentController implements Initializable
 
         stageNewEditPlaylist.show();
     }
+
     private void handleEditPlaylist(ActionEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();

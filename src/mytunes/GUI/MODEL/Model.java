@@ -9,13 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Duration;
@@ -24,6 +19,7 @@ import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 import mytunes.BLL.MusicManager;
 import mytunes.BLL.MyTunesPlayer;
+import mytunes.GUI.CONTROLLER.FXMLDocumentController;
 
 /**
  *
@@ -83,10 +79,10 @@ public class Model
         } 
         catch (IOException ex)
         {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         } catch (UnsupportedAudioFileException ex)
         {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+           ex.printStackTrace();
         }
     }
 
@@ -292,6 +288,8 @@ public class Model
             mMgr.deletePlaylist(playlist.getId());
 
             playlists.remove(playlist);
+            songsByPlaylistId.clear();
+           
 
     }
 

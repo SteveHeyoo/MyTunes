@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -63,10 +64,26 @@ public class MusicManager
     public List<Playlist> getAllPlayLists() throws IOException, UnsupportedAudioFileException
     {
         List<Playlist> playlists = sPlDAO.getAllPlayLists();
+
         for (Playlist playlist : playlists)
         {
+            double totalDuration = 0;
             playlist.setNumberOfSongsInPlaylist(getSongsByPlaylistId(playlist.getId()).size());
+
+            for (Song songInPlaylist : getSongsByPlaylistId(playlist.getId()))
+            {
+                totalDuration += songInPlaylist.getDuration();
+            }
+            long microseconds = (long) totalDuration * 1000000;
+            int mili = (int) (microseconds / 1000);
+
+            int sec = (mili / 1000) % 60;
+            int min = ((mili / 1000) / 60);
+            int minToShow = (int) (long) (TimeUnit.MILLISECONDS.toMinutes(mili) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mili)));
+
+            playlist.setPlaylistDuration(min / 60 + ":" + minToShow + ":" + sec);
         }
+
         return playlists;
     }
 
@@ -95,7 +112,7 @@ public class MusicManager
 
                 if (readSongId == songId)
                 {
-                    
+
                     if (returnList.contains(song))
                     {
                         Song newSong;
@@ -104,13 +121,12 @@ public class MusicManager
                         //newSong = sPlDAO.addSong(file);
                         //returnList.add(newSong);
                         //System.out.println(song.getAllSongStringInfo());
-                        returnList.add(song); 
-                    }
-                    else
+                        returnList.add(song);
+                    } else
                     {
-                       returnList.add(song); 
-                    }   
-                    
+                        returnList.add(song);
+                    }
+
                     /*
                     for (Song songInReturnList : returnList)
                     {
@@ -123,8 +139,6 @@ public class MusicManager
                         }
                         //duplicate.
                     }*/
-                    
-                   
                 }
 
             }
@@ -161,7 +175,6 @@ public class MusicManager
     {
         sPlDAO.editPlaylistName(playlistToEdit);
     }
-
 
     public void saveEditedSong(Song songSong) throws IOException, UnsupportedAudioFileException
     {
