@@ -27,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -100,6 +101,8 @@ public class FXMLDocumentController implements Initializable
 
     private Song currentSong;
     private Control currentControlList;
+    @FXML
+    private RadioButton radioRepeat;
     
     public FXMLDocumentController()
     {
@@ -324,7 +327,6 @@ public class FXMLDocumentController implements Initializable
         model.setSongs(searchResult);
     }
 
-    @FXML
     private void handleMoveSongUp(ActionEvent event)
     {
         Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -336,7 +338,6 @@ public class FXMLDocumentController implements Initializable
         }
     }
     
-    @FXML
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -386,7 +387,6 @@ public class FXMLDocumentController implements Initializable
         stageNewEditPlaylist.show();
     }
     
-    @FXML
     private void handleEditPlaylist(ActionEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
@@ -421,6 +421,12 @@ public class FXMLDocumentController implements Initializable
     private void handlePlayPreviousSong(ActionEvent event)
     {
         model.pressPreviousButton();
+    }
+
+    @FXML
+    private void handleRadioReapetSong(ActionEvent event)
+    {
+        model.setRepeatSong(!model.getRepeatSong());
     }
 
 }

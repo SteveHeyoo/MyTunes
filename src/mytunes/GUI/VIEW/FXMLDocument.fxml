@@ -52,5 +52,6 @@
       <Label layoutX="785.0" layoutY="37.0" text="Filter:" />
       <Slider fx:id="volumeSlide" layoutX="226.0" layoutY="78.0" onDragDetected="#handleVolume" />
       <Label fx:id="lblVolume" layoutX="226.0" layoutY="53.0" text="Volume" />
+      <RadioButton fx:id="radioRepeat" layoutX="531.0" layoutY="411.0" mnemonicParsing="false" onAction="#handleRadioReapetSong" text="RadioButton" />
     </children>
 </AnchorPane>
