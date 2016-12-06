@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -92,12 +93,14 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private Button btnNextSong;
 
-    private Song currentSong;
     @FXML
     private Slider volumeSlide;
     @FXML
     private Label lblVolume;
 
+    private Song currentSong;
+    private Control currentControlList;
+    
     public FXMLDocumentController()
     {
         model = Model.getInstance();
@@ -175,10 +178,13 @@ public class FXMLDocumentController implements Initializable
     private void handleTblViewMouseClick(MouseEvent event)
     {
         currentSong = tblSong.getSelectionModel().getSelectedItem();
-
+        currentControlList = tblSong; 
+        
         if (event.getClickCount() == 2 && currentSong != null)
         {
+            model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
+            
         }
     }
 
@@ -234,6 +240,7 @@ public class FXMLDocumentController implements Initializable
     private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
+        model.setCurrentPlaylist(playlist);
         int index = tblPlaylist.getSelectionModel().getSelectedIndex();
         int playlistId = playlist.getId();
         if (playlist != null)
@@ -261,9 +268,7 @@ public class FXMLDocumentController implements Initializable
             {
                 showAlert("IOException", ex.getMessage());
             }
-
         }
-
     }
 
     @FXML
@@ -287,14 +292,20 @@ public class FXMLDocumentController implements Initializable
         tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
 
     }
-
+    @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
     {
-        currentSong = listPlaylistSong.getSelectionModel().getSelectedItem();
-
+        currentSong = listPlaylistSong.getSelectionModel().getSelectedItem(); 
+        currentControlList = listPlaylistSong;
+        
+        
         if (event.getClickCount() == 2 && currentSong != null)
         {
+            model.setIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
+            model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
+            //currentControlList = listPlaylistSong;
+           
         }
     }
 
@@ -314,6 +325,8 @@ public class FXMLDocumentController implements Initializable
         model.setSongs(searchResult);
     }
 
+
+    @FXML
     private void handleMoveSongUp(ActionEvent event)
     {
         Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -325,6 +338,8 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
+    
+    @FXML
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -339,8 +354,11 @@ public class FXMLDocumentController implements Initializable
     private void handlePlayButton(ActionEvent event)
     {
         //model.playSong(currentSong);
-
-        model.playSongButtonClick(currentSong);
+        model.setIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
+        model.setCurrentListControl(currentControlList);
+        model.playSongButtonClick();
+        
+        
         //btnPlaySong.setText("Pause");
     }
 
@@ -370,7 +388,8 @@ public class FXMLDocumentController implements Initializable
 
         stageNewEditPlaylist.show();
     }
-
+    
+    @FXML
     private void handleEditPlaylist(ActionEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
@@ -391,6 +410,20 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleVolume(MouseEvent event)
     {
+    }
+
+    @FXML
+    private void handlePlayNextSong(ActionEvent event)
+    {
+
+        model.pressNextButton();
+
+    }
+
+    @FXML
+    private void handlePlayPreviousSong(ActionEvent event)
+    {
+        model.pressPreviousButton();
     }
 
 }

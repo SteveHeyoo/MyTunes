@@ -13,6 +13,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Control;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
@@ -33,12 +36,17 @@ public class Model
     private ObservableList songs, playlists, songsByPlaylistId;
     private MyTunesPlayer mTPlayer;
     private int lastSongId;
+    private int lastSongIndex;
     private boolean runningDelay;
     private boolean playingSong;
     
+    private Song songPlaying;
     private Timeline timeline;
-    private int index;
     private List<Song> currentList;
+    private Control currentListControl;
+    private Playlist currentPlaylist;
+    private int currentIndex;
+    private List<Song> songsCleared;
     
     private Model()
     {
@@ -51,6 +59,21 @@ public class Model
    
     }
 
+    public void setCurrentListControl(Control currentListControl)
+    {
+        this.currentListControl = currentListControl; 
+    }
+    
+    public void setCurrentPlaylist(Playlist playlist)
+    {
+        currentPlaylist = playlist;
+    }
+    
+    public void setIndex(int index)
+    {
+        currentIndex = index;
+    }
+    
     public static Model getInstance()
     {
         if (INSTANCE == null)
@@ -95,20 +118,36 @@ public class Model
     {
         
         if (mTPlayer == null)
-        {
-            
+        {            
             playTheSong(song);
         }
         else
         {
             mTPlayer.getMediaPlayer().stop();
             playTheSong(song);
+            /*
+            Song songToPlay;
+            try
+            {
+                ListView<Song> playlist = (ListView)currentListControl;
+                songToPlay = playlist.getSelectionModel().getSelectedItem();
+            
+            }
+            catch(ClassCastException c)
+            {
+                TableView<Song> playlist = (TableView)currentListControl;
+                songToPlay = playlist.getSelectionModel().getSelectedItem();
+           
+            }   
+            playTheSong(songToPlay);
+            */
+        
         }            
         
     }
 
     
-    public void playSongButtonClick(Song song)
+    public void playSongButtonClick()
     {
 //        if (mTPlayer == null)
 //        {           
@@ -117,13 +156,29 @@ public class Model
 //        else
 //        {  
 //        }
+        Song songToPlay;
+            try
+            {
+                ListView<Song> playlist = (ListView)currentListControl;
+                songToPlay = playlist.getSelectionModel().getSelectedItem();
+            
+            }
+            catch(ClassCastException c)
+            {
+                TableView<Song> playlist = (TableView)currentListControl;
+                songToPlay = playlist.getSelectionModel().getSelectedItem();
+           
+            }   
         
-        int id = song.getId();
+        
+        int id = songToPlay.getId();
+        
+        
         
         if(mTPlayer != null)
         {
             
-            if(lastSongId == id)
+            if(currentIndex == lastSongIndex)
             {
                 //it is the same song as the last. the song should pause/play
                 if(mTPlayer.isPaused())
@@ -148,7 +203,7 @@ public class Model
                     }
                     else
                     {
-                        playTheSong(song);
+                        playTheSong(songToPlay);
                     }
                 }
             }
@@ -156,13 +211,13 @@ public class Model
             {
                 //it is a new song. play the song
                 mTPlayer.getMediaPlayer().stop();
-                playTheSong(song);
+                playTheSong(songToPlay);
             }          
         }
         else
         {   
                 //no song playing, and no song has been played before
-                playTheSong(song);
+                playTheSong(songToPlay);
                 
         }
         
@@ -176,75 +231,222 @@ public class Model
     
     private void playTheSong(Song song)
     {      
-        if(playingSong != false)
+        if(playingSong == true)
         {
             timeline.stop();
         }
-
+        songPlaying = song;
         playingSong = true;
         mTPlayer = new MyTunesPlayer(song.getFilePath());
         mTPlayer.getMediaPlayer().setAutoPlay(true);
         lastSongId = song.getId();
+        lastSongIndex = currentIndex;
+        
+        ListView playlist = null;
+        
+        try
+        {
+            playlist = (ListView)currentListControl;
+            //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
+            //currentIndex = playlist.getSelectionModel().getSelectedIndex();
+            //currentIndex = playlist.ge
+            
+        }
+        catch(ClassCastException c)
+        {
+            System.out.println("sdas");
+        }
+        
         //index = currentList.indexOf(song);
         startDelay(song); 
+        //currentIndex = playlist.getSelectionModel().getSelectedIndex();
+        
         
     }
     
     private void startDelay(Song song)
     {
-        timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration()*1000)),ae -> playNextSong(song)));timeline.play();
+        timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration()*1000)),ae -> playNextSong(false)));timeline.play();
         runningDelay = true;
     }
     
+    public Song getSongPlaying()
+    {
+        return songPlaying;
+    }
         
-    private void playNextSong(Song song)
+    public void pressNextButton()
+    {       
+        //mTPlayer.setPause(false);
+        if (mTPlayer == null)
+        {
+            //mTPlayer.getMediaPlayer().stop();
+            timeline.stop();
+
+            playNextSong(false);
+        }
+        else
+        {
+            mTPlayer.getMediaPlayer().stop();
+
+            timeline.stop();
+            
+            playNextSong(false);           
+        }       
+    }
+    public void pressPreviousButton()
+    {
+        if (mTPlayer == null)
+        {
+            //mTPlayer.getMediaPlayer().stop();
+            timeline.stop();
+
+            playNextSong(true);
+        }
+        else
+        {
+            mTPlayer.getMediaPlayer().stop();
+
+            timeline.stop();
+            
+            playNextSong(true);         
+        }
+    }
+    
+    
+    private void playNextSong(boolean previous) 
     {
         playingSong = false;
-        playTheSong(getNextSongInCurrentList(song));
-        runningDelay = false;
+        Song nextSong = null;
+        try
+        {
+            nextSong = getNextSongInCurrentList(songPlaying,previous);
+        } catch (IOException ex)
+        {
+            ex.printStackTrace();
+        } catch (UnsupportedAudioFileException ex)
+        {
+           ex.printStackTrace();
+        }
+        
+        try
+        {
+            ListView<Song> playlist = (ListView)currentListControl;
+            //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
+            playlist.getSelectionModel().clearAndSelect(currentIndex);
+            
+        }
+        catch(ClassCastException c)
+        {
+            TableView<Song> playlist = (TableView)currentListControl;
+            //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
+            playlist.getSelectionModel().clearAndSelect(currentIndex);
+        }
+        playTheSong(nextSong);
+        //runningDelay = false;      
     }
+    
     /**
      * Returns the next song in the currently active list og songs
      * @param song
      * @return the next song
      */
-    public Song getNextSongInCurrentList(Song song)
+    
+    
+    public Song getNextSongInCurrentList(Song currentSong, boolean previous) throws IOException, UnsupportedAudioFileException
     {
+        Song nextSong;       
         
-        Song nextSong;
-        if(songs.contains(song))
+        if(songs.contains(currentSong))
         {
             currentList = songs;
-            //System.out.println("List: all list");
+            System.out.println("List: all list");
         }
-        else if(songsByPlaylistId.contains(song))
+        else if(songsByPlaylistId.contains(currentSong))
         {
             currentList = songsByPlaylistId;
-            ///System.out.println("List: playlist list");
+            System.out.println("List: playlist list");
         }
         else
         {
             currentList = null;
             System.out.println("ERROR no list found");
-        }
+        }        
         
+        //int index = currentList.indexOf(currentSong);
+        System.out.println("index:" + currentIndex);
         
-        int index = currentList.indexOf(song);
-
-        if (index != currentList.size()-1)
+        if (previous == false)
         {
-            System.out.println("next sonng is: " + index + 1);
-            nextSong = currentList.get(index + 1);
-            index++;
+            if (currentIndex != currentList.size()-1)
+            {
+                //System.out.println("next sonng is: " + index + 1);
+                nextSong = currentList.get(currentIndex + 1);
+                currentIndex = currentIndex + 1;
+            }
+            else
+            {
+                //System.out.println("nexxxt song is: " + currentList.get(0).getAllSongStringInfo());
+                nextSong = currentList.get(0);
+                currentIndex = 0;
+            }
         }
         else
         {
-            System.out.println("nexxxt song is: " + currentList.get(0).getAllSongStringInfo());
-            nextSong = currentList.get(0);
-            index = 0;
-        }
+            if (currentIndex != 0)
+            {
+                //System.out.println("next sonng is: " + index + 1);
+                nextSong = currentList.get(currentIndex - 1);
+                currentIndex = currentIndex - 1;
+            }
+            else
+            {
+                //System.out.println("nexxxt song is: " + currentList.get(0).getAllSongStringInfo());
+                nextSong = currentList.get(0);
+                currentIndex = 0;
+            }
+        }            
+        
         return nextSong;
     }
+    /*
+    public Song getNextSongInCurrentList(Song song) throws IOException, UnsupportedAudioFileException
+    {
+        Song nextSong;       
+        
+        if(songs.contains(song))
+        {
+            currentList = songs;
+            System.out.println("List: all list");
+        }
+        else if(songsByPlaylistId.contains(song))
+        {
+            currentList = songsByPlaylistId;
+            System.out.println("List: playlist list");
+        }
+        else
+        {
+            currentList = null;
+            System.out.println("ERROR no list found");
+        }        
+        
+        int index = currentList.indexOf(song);
+        System.out.println("index:" + index);
+        
+        if (index != currentList.size()-1)
+        {
+            //System.out.println("next sonng is: " + index + 1);
+            nextSong = currentList.get(index + 1);
+        }
+        else
+        {
+            //System.out.println("nexxxt song is: " + currentList.get(0).getAllSongStringInfo());
+            nextSong = currentList.get(0);
+        }
+        
+        return nextSong;
+    }
+    */
     
     public void deleteSong(Song song) throws IOException
     {
@@ -258,17 +460,14 @@ public class Model
         if (playlistToEdit == null)
         {
             Playlist playlistToAdd = mMgr.createNewPlaylist(playlistName);
-            playlists.add(playlistToAdd);
-            
+            playlists.add(playlistToAdd);            
         }
         else
-        {
-          
+        {          
                 playlistToEdit.setName(playlistName);
                 mMgr.editPlaylistName(playlistToEdit);          
                 playlists.clear();
                 playlists.addAll(mMgr.getAllPlayLists());
-
         }
 
     }
@@ -379,4 +578,7 @@ public class Model
         
     }
 
+    
+
+    
 }
