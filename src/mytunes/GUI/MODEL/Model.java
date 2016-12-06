@@ -231,14 +231,17 @@ public class Model
     
     private void playTheSong(Song song)
     {      
+
         if(playingSong == true)
         {
             timeline.stop();
+            
         }
         songPlaying = song;
         playingSong = true;
         mTPlayer = new MyTunesPlayer(song.getFilePath());
         mTPlayer.getMediaPlayer().setAutoPlay(true);
+        
         lastSongId = song.getId();
         lastSongIndex = currentIndex;
         
@@ -533,6 +536,7 @@ public class Model
     public int moveSongUp(Song songToMoveUp)
     {
         int indexId = songsByPlaylistId.indexOf(songToMoveUp);
+        System.out.println(indexId);
         if (indexId != 0)
         {
             Collections.swap(songsByPlaylistId, indexId - 1, indexId);
@@ -576,6 +580,11 @@ public class Model
             songs.addAll(mMgr.getAllSongs());
 
         
+    }
+
+    public MyTunesPlayer getmTPlayer()
+    {
+        return mTPlayer;
     }
 
     
