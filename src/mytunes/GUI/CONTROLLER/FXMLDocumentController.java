@@ -181,9 +181,9 @@ public class FXMLDocumentController implements Initializable
         
         if (event.getClickCount() == 2 && currentSong != null)
         {
+            model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             
-            model.setCurrentListControl(currentControlList);
         }
     }
 
@@ -238,6 +238,7 @@ public class FXMLDocumentController implements Initializable
     private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
+        model.setCurrentPlaylist(playlist);
         int index = tblPlaylist.getSelectionModel().getSelectedIndex();
         int playlistId = playlist.getId();
         if (playlist != null)
@@ -265,9 +266,7 @@ public class FXMLDocumentController implements Initializable
             {
                 showAlert("IOException", ex.getMessage());
             }
-
         }
-
     }
 
     @FXML
@@ -298,11 +297,14 @@ public class FXMLDocumentController implements Initializable
         currentSong = listPlaylistSong.getSelectionModel().getSelectedItem(); 
         currentControlList = listPlaylistSong;
         
+        
         if (event.getClickCount() == 2 && currentSong != null)
         {
+            model.setIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
+            model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             //currentControlList = listPlaylistSong;
-            model.setCurrentListControl(currentControlList);
+           
         }
     }
 
@@ -349,6 +351,7 @@ public class FXMLDocumentController implements Initializable
     private void handlePlayButton(ActionEvent event)
     {
         //model.playSong(currentSong);
+        model.setIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
         model.setCurrentListControl(currentControlList);
         model.playSongButtonClick();
         
@@ -409,25 +412,15 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handlePlayNextSong(ActionEvent event)
     {
-        //model.playSong(model.getNextSongInCurrentList(model.getSongPlaying()));
+
         model.pressNextButton();
-        /*
-        try
-        {
-            ListView<Song> playlist = (ListView)currentList;
-            playlist.getSelectionModel().clearAndSelect(currentList.indexOf(model.getNextSongInCurrentList(currentSong)));
-            
-        }
-        catch(ClassCastException c)
-        {
-            TableView<Song> playlist = (TableView)currentList;
-            playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
-        }   */
+
     }
 
     @FXML
     private void handlePlayPreviousSong(ActionEvent event)
     {
+        model.pressPreviousButton();
     }
 
 }

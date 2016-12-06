@@ -123,20 +123,19 @@ public class MusicManager
                         }
                         //duplicate.
                     }*/
-                    
-                    
-
-
                 }
-
             }
-
         }
 
         return returnList;
 
     }
 
+    public List<Integer> getSongIdByPlaylistId(int playlistId) throws IOException
+    {
+        return rDAO.getSongIdByPlaylistId(playlistId);
+    }
+    
     public void addSongToPlaylist(int songId, int playlistId) throws IOException
     {
         rDAO.addSongToPlaylist(songId, playlistId);
