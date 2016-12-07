@@ -311,4 +311,26 @@ public class SongsPlaylistsDAO
 
         }
     }
+
+    public void editSong(Song songToSave) throws IOException, UnsupportedAudioFileException
+    {
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_SONGS), "rw"))
+        {
+            for (int i = ID_SIZE; i < raf.length(); i += WRITE_SIZE)
+            {
+                raf.seek(i);
+                int readId = raf.readInt();
+
+                if (readId == songToSave.getId())
+                {
+                    double duration = getDuration(new File(songToSave.getFilePath()));
+                    raf.writeDouble(duration);    //writes the duration on the song
+                    raf.writeBytes(String.format("%-" + NAME_SIZE + "s", songToSave.getArtist()).substring(0, NAME_SIZE)); //Writes artist
+                    raf.writeBytes(String.format("%-" + NAME_SIZE + "s", songToSave.getTitle()).substring(0, NAME_SIZE)); // Writes Title
+                    raf.writeBytes(String.format("%-" + FILEPATH_SIZE + "s", songToSave.getFilePath()).substring(0, FILEPATH_SIZE)); //write file_path
+                }
+
+            }
+        }
+    }
 }
