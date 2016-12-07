@@ -1,59 +1,207 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+
+
 <?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
+
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="658.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
-    <children>
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-        <Label layoutX="21.0" layoutY="189.0" text="Playlists" />
-        <TableView fx:id="tblPlaylist" layoutX="21.0" layoutY="222.0" onMouseClicked="#handleShowPlaylistSongs" prefHeight="378.0" prefWidth="252.0">
-            <columns>
-                <TableColumn fx:id="columnPlaylistName" prefWidth="75.0" text="Name" />
-                <TableColumn fx:id="columnPlaylistNumberOfSongs" prefWidth="75.0" text="Songs" />
-                <TableColumn fx:id="columnPlaylistTotalDuration" prefWidth="75.0" text="Time" />
-            </columns>
-        </TableView>
-        <Button fx:id="btnPreviousSong" layoutX="21.0" layoutY="71.0" mnemonicParsing="false" onAction="#handlePlayPreviousSong" text="Previous" />
-        <Button fx:id="btnPlaySong" layoutX="106.0" layoutY="71.0" mnemonicParsing="false" onAction="#handlePlayButton" text="Play" />
-        <Button fx:id="btnNextSong" layoutX="163.0" layoutY="71.0" mnemonicParsing="false" onAction="#handlePlayNextSong" text="Next" />
-        <Label fx:id="lblSongPlaylist" layoutX="325.0" layoutY="189.0" text="Songs on Playlist" />
-        <ListView fx:id="listPlaylistSong" layoutX="325.0" layoutY="222.0" onMouseClicked="#handleSongsOnPlaylistPlay" prefHeight="378.0" prefWidth="200.0" />
-        <Button layoutX="553.0" layoutY="222.0" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" text="&lt;-" />
-        <TableView fx:id="tblSong" layoutX="626.0" layoutY="222.0" onDragDropped="#handleDragDropFiles" onMouseClicked="#handleTblViewMouseClick" prefHeight="378.0" prefWidth="390.0">
-            <columns>
-                <TableColumn fx:id="columnTitle" prefWidth="75.0" text="Title" />
-                <TableColumn fx:id="columnArtist" prefWidth="75.0" text="Artist" />
-                <TableColumn fx:id="columnCategory" prefWidth="75.0" text="Category" />
-                <TableColumn fx:id="columnTime" prefWidth="75.0" text="Time" />
-            </columns>
-        </TableView>
-        <Label fx:id="lblSong" layoutX="626.0" layoutY="189.0" text="Songs" />
-        <Button layoutX="1036.0" layoutY="613.0" mnemonicParsing="false" text="Close" />
-        <Button layoutX="27.0" layoutY="613.0" mnemonicParsing="false" onAction="#handleNewPlaylist" text="New" />
-        <Button layoutX="97.0" layoutY="613.0" mnemonicParsing="false" text="Edit" />
-        <Button layoutX="163.0" layoutY="613.0" mnemonicParsing="false" onAction="#handleDeletePlayList" text="Delete" />
-        <Button layoutX="460.0" layoutY="607.0" mnemonicParsing="false" text="Delete" />
-        <Button layoutX="325.0" layoutY="607.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="56.0" text="^" />
-        <Button layoutX="397.0" layoutY="607.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="50.0" text="v" />
-        <Button layoutX="793.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleTblViewSongsDelete" text="Delete" />
-        <Button layoutX="709.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleSongEdit" text="Edit" />
-        <Button layoutX="626.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleNewSong" text="New" />
-        <TextField fx:id="txtFieldSearch" layoutX="825.0" layoutY="32.0" onKeyReleased="#handleSearch3" />
-        <Button layoutX="1016.0" layoutY="32.0" mnemonicParsing="false" text="Search" />
-        <Label layoutX="785.0" layoutY="37.0" text="Filter:" />
-        <Slider fx:id="volumeSlide" layoutX="226.0" layoutY="78.0" onDragDetected="#handleVolume" />
-        <Label fx:id="lblVolume" layoutX="226.0" layoutY="53.0" text="Volume" />
-        <RadioButton fx:id="radioRepeat" layoutX="531.0" layoutY="411.0" mnemonicParsing="false" onAction="#handleRadioReapetSong" text="RadioButton" />
-        <JFXProgressBar fx:id="progressbarDuration" layoutX="270.0" layoutY="135.0" progress="0.0" />
-        <Label fx:id="lblDuration" layoutX="479.0" layoutY="128.0" text="" />
-    </children>
+
+<AnchorPane id="AnchorPane" prefHeight="602.0" prefWidth="1109.0" style="-fx-background-image: url('file:C:\Users\Bo\Documents\GitHub\MyTunes\FXImages\BG_GUI.png');" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
+         <ImageView fitHeight="646.0" fitWidth="1110.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../FXImages/BG_GUI.png" />
+         </image>
+      </ImageView>
+            <Label layoutX="21.0" layoutY="132.0" prefHeight="31.0" prefWidth="63.0" text="Playlists" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect></Label>
+      <TableView fx:id="tblPlaylist" layoutX="21.0" layoutY="168.0" onMouseClicked="#handleShowPlaylistSongs" prefHeight="378.0" prefWidth="252.0">
+        <columns>
+          <TableColumn fx:id="columnPlaylistName" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="columnPlaylistNumberOfSongs" prefWidth="75.0" text="Songs" />
+            <TableColumn fx:id="columnPlaylistTotalDuration" prefWidth="75.0" text="Time" />
+        </columns>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </TableView>
+
+      <Label fx:id="lblSongPlaylist" layoutX="322.0" layoutY="147.0" prefHeight="21.0" prefWidth="128.0" text="Songs on Playlist" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect></Label>
+      <ListView fx:id="listPlaylistSong" layoutX="322.0" layoutY="168.0" onMouseClicked="#handleSongsOnPlaylistPlay" prefHeight="378.0" prefWidth="200.0">
+         <effect>
+            <InnerShadow />
+         </effect></ListView>
+      <TableView fx:id="tblSong" layoutX="626.0" layoutY="168.0" onMouseClicked="#handleTblViewMouseClick" prefHeight="378.0" prefWidth="390.0">
+
+     
+        <columns>
+          <TableColumn fx:id="columnTitle" prefWidth="75.0" text="Title" />
+          <TableColumn fx:id="columnArtist" prefWidth="75.0" text="Artist" />
+            <TableColumn fx:id="columnCategory" prefWidth="75.0" text="Category" />
+            <TableColumn fx:id="columnTime" prefWidth="75.0" text="Time" />
+        </columns>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </TableView>
+
+      <Label fx:id="lblSong" layoutX="626.0" layoutY="147.0" text="Songs" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect></Label>
+      <TextField fx:id="txtFieldSearch" layoutX="825.0" layoutY="32.0" onKeyReleased="#handleSearch3">
+         <effect>
+            <InnerShadow />
+         </effect></TextField>
+      <Label layoutX="780.0" layoutY="37.0" text="Filter:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect></Label>
+      <Slider fx:id="volumeSlider" blockIncrement="1.0" layoutX="317.0" layoutY="82.0" />
+      <Label fx:id="lblVolume" layoutX="327.0" layoutY="43.0" prefHeight="31.0" prefWidth="119.0" text="Volume" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect></Label>
+      <JFXButton layoutX="626.0" layoutY="554.0" onAction="#handleNewSong" ripplerFill="RED" text="New" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect></JFXButton>
+      <JFXButton layoutX="705.0" layoutY="554.0" onAction="#handleSongEdit" ripplerFill="RED" text="Edit" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect></JFXButton>
+      <JFXButton layoutX="960.0" layoutY="554.0" ripplerFill="RED" text="Close" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect></JFXButton>
+      <JFXButton layoutX="459.0" layoutY="554.0" prefHeight="31.0" prefWidth="63.0" ripplerFill="RED" text="Delete" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="322.0" layoutY="554.0" prefHeight="55.0" prefWidth="55.0" ripplerFill="RED" text="⬆" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect>
+      </JFXButton>
+      <JFXButton layoutX="378.0" layoutY="554.0" prefHeight="55.0" prefWidth="55.0" ripplerFill="RED" text="⬇" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect>
+      </JFXButton>
+      <JFXButton layoutX="95.0" layoutY="554.0" prefHeight="31.0" prefWidth="63.0" ripplerFill="RED" text="Edit" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect></JFXButton>
+      <JFXButton layoutX="210.0" layoutY="554.0" onAction="#handleDeletePlayList" prefHeight="31.0" prefWidth="63.0" ripplerFill="RED" text="Delete" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect></JFXButton>
+      <JFXButton layoutX="21.0" layoutY="554.0" onAction="#handleNewPlaylist" prefHeight="31.0" prefWidth="63.0" ripplerFill="RED" text="New" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect></JFXButton>
+      <JFXButton fx:id="btnNextSong" layoutX="18.0" layoutY="64.0" prefHeight="31.0" prefWidth="56.0" ripplerFill="RED" text="New" textFill="WHITE">
+
+         <effect>
+            <Bloom />
+         </effect>
+      </JFXButton>
+      <JFXButton fx:id="btnPlaySong" layoutX="74.0" layoutY="64.0" prefHeight="31.0" prefWidth="69.0" ripplerFill="RED" text="Play" textFill="WHITE">
+
+         <effect>
+            <Bloom />
+         </effect>
+      </JFXButton>
+      <JFXButton fx:id="btnPreviousSong" layoutX="143.0" layoutY="64.0" prefHeight="31.0" prefWidth="76.0" ripplerFill="RED" text="Previous" textFill="WHITE">
+
+         <effect>
+            <Bloom />
+         </effect>
+      </JFXButton>
+      <JFXButton layoutX="535.0" layoutY="232.0" onAction="#handleAddSongToPlaylist" prefHeight="31.0" prefWidth="76.0" ripplerFill="RED" text="«" textFill="WHITE">
+
+         <effect>
+            <Bloom />
+         </effect>
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </JFXButton>
+
+      <Button layoutX="1036.0" layoutY="613.0" mnemonicParsing="false" text="Close" />
+      <Button layoutX="27.0" layoutY="613.0" mnemonicParsing="false" onAction="#handleNewPlaylist" text="New" />
+      <Button layoutX="97.0" layoutY="613.0" mnemonicParsing="false" text="Edit" />
+      <Button layoutX="163.0" layoutY="613.0" mnemonicParsing="false" onAction="#handleDeletePlayList" text="Delete" />
+      <Button layoutX="460.0" layoutY="607.0" mnemonicParsing="false" text="Delete" />
+      <Button layoutX="325.0" layoutY="607.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="56.0" text="^" />
+      <Button layoutX="397.0" layoutY="607.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="50.0" text="v" />
+      <Button layoutX="793.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleTblViewSongsDelete" text="Delete" />
+      <Button layoutX="709.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleSongEdit" text="Edit" />
+      <Button layoutX="626.0" layoutY="607.0" mnemonicParsing="false" onAction="#handleNewSong" text="New" />
+      <Button layoutX="1016.0" layoutY="32.0" mnemonicParsing="false" text="Search" />
+      <Label layoutX="785.0" layoutY="37.0" text="Filter:" />
+      <Slider fx:id="volumeSlide" layoutX="226.0" layoutY="78.0"/>
+      <RadioButton fx:id="radioRepeat" layoutX="531.0" layoutY="411.0" mnemonicParsing="false" onAction="#handleRadioReapetSong" text="RadioButton" />
+
+
+
+
+
+
+
+
+
+
+
+
+   <effect>
+      <Blend />
+   </effect>
+
 </AnchorPane>

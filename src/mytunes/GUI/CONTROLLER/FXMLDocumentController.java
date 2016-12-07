@@ -14,8 +14,10 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +39,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -168,6 +171,7 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
+
     private void loadSongDataView(Song song) throws IOException
     {
         // Fetches primary stage and gets loader and loads FXML file to Parent
@@ -249,7 +253,8 @@ public class FXMLDocumentController implements Initializable
         try
         {
             loadSongDataView(song);
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -264,6 +269,9 @@ public class FXMLDocumentController implements Initializable
         int playlistId = playlist.getId();
         if (playlist != null)
         {
+
+
+
             try
             {
                 model.showPlaylistSongs(playlistId);
@@ -275,6 +283,7 @@ public class FXMLDocumentController implements Initializable
             {
                 showAlert("UnsupportedAudioFileException", ex.getMessage());
             }
+
 
         }
 
@@ -343,6 +352,7 @@ public class FXMLDocumentController implements Initializable
         }
         model.setSongs(searchResult);
     }
+    @FXML
 
     private void handleMoveSongUp(ActionEvent event)
     {
@@ -354,7 +364,7 @@ public class FXMLDocumentController implements Initializable
 
         }
     }
-
+    @FXML
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -378,6 +388,9 @@ public class FXMLDocumentController implements Initializable
         //btnPlaySong.setText("Pause");
     }
 
+    
+
+    @FXML
     private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
     {
         // TODO Display the New/Edit gui to enter a name to the new playlist
@@ -422,10 +435,7 @@ public class FXMLDocumentController implements Initializable
         alert.showAndWait();
     }
 
-    @FXML
-    private void handleVolume(MouseEvent event)
-    {
-    }
+    
 
     @FXML
     private void handlePlayNextSong(ActionEvent event)

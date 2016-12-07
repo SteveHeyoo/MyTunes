@@ -568,6 +568,17 @@ public class Model
         return indexId;
     }
 
+
+    private void setVolume()
+    {
+        mTPlayer.getMediaPlayer().setVolume(lastSongId);
+    }
+
+    public void setVolume(double d)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public void editSong(Song songToEdit, File fileSong) throws IOException, UnsupportedAudioFileException
     {
         Song songSong = (Song) songs.get(songs.indexOf(songToEdit));
@@ -593,4 +604,5 @@ public class Model
     
 
     
+
 }
