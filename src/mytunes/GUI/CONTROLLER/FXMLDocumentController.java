@@ -34,6 +34,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -499,6 +500,12 @@ public class FXMLDocumentController implements Initializable
 
             }
         });
+    }
+
+    @FXML
+    private void handleDragDropFiles(DragEvent event)
+    {
+        System.out.println("Drag&Dropped a item!");
     }
 
 }
