@@ -5,16 +5,13 @@
  */
 package mytunes.GUI.CONTROLLER;
 
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,7 +26,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
@@ -47,6 +43,7 @@ import mytunes.GUI.MODEL.Model;
  */
 public class FXMLDocumentController implements Initializable
 {
+
     @FXML
     private MediaPlayer mp;
     private Media me;
@@ -90,7 +87,7 @@ public class FXMLDocumentController implements Initializable
     private Button btnPlaySong;
     @FXML
     private Button btnNextSong;
-    
+
     @FXML
     private Slider volumeSlider;
 
@@ -135,7 +132,8 @@ public class FXMLDocumentController implements Initializable
             model.createNewSong(file);
         }
     }
-
+    
+    
     private void loadSongDataView(Song song) throws IOException
     {
         // Fetches primary stage and gets loader and loads FXML file to Parent
@@ -193,14 +191,14 @@ public class FXMLDocumentController implements Initializable
     }
 
     @FXML
-
     private void handleSongEdit(ActionEvent event)
     {
         Song song = tblSong.getSelectionModel().getSelectedItem();
         try
         {
             loadSongDataView(song);
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -215,8 +213,6 @@ public class FXMLDocumentController implements Initializable
         if (playlist != null)
         {
             model.showPlaylistSongs(playlistId);
-            
-            
 
         }
         if (event.getClickCount() == 2)
@@ -259,26 +255,13 @@ public class FXMLDocumentController implements Initializable
         model.setSongs(searchResult);
     }
 
-    
     @FXML
-    private void handleVolume(DragEvent event)
+    private void handleVolume(MouseEvent event)
     {
-//        mTPlayer.getMediaPlayer.
-//        
-//        
-//        volumeSlider.setValue(mp.getVolume() * 100);
-//        volumeSlider.valueProperty().addListener(new InvalidationListener()
-//        {
-//                @Override
-//                public void invalidated(Observable observable)
-//                {
-//                mp.setVolume(volumeSlider.getValue() / 100);
-//                }  
-//        });
-    }
-    
-    
 
+        model.setVolume(volumeSlider.getValue()/100);
+
+    }
 
     @FXML
     private void handleMoveSongUp(ActionEvent event)
@@ -312,7 +295,8 @@ public class FXMLDocumentController implements Initializable
         model.playSongButtonClick(currentSong);
         //btnPlaySong.setText("Pause");
     }
-
+    
+    @FXML
     private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
     {
         // TODO Display the New/Edit gui to enter a name to the new playlist

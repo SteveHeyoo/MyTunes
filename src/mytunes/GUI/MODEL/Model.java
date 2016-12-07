@@ -13,9 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Duration;
@@ -380,4 +377,13 @@ public class Model
         return indexId;
     }
 
+    private void setVolume()
+    {
+        mTPlayer.getMediaPlayer().setVolume(lastSongId);
+    }
+
+    public void setVolume(double d)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
